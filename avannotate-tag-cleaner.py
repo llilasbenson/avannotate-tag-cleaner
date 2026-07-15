@@ -952,6 +952,7 @@ def make_tag_groups_dataframe(
     group_language,
     ignore_case,
     ignore_accents,
+    audio_filename,
 ):
     group_labels = GROUP_LABELS[group_language]
     records = []
@@ -981,10 +982,11 @@ def make_tag_groups_dataframe(
                 {
                     "tags": entity_value,
                     "group": group_value,
+                    "audio": audio_filename,
                 }
             )
 
-    return pd.DataFrame(records, columns=["tags", "group"])
+    return pd.DataFrame(records, columns=["tags", "group", "audio"])
 
 
 # ============================================================
@@ -1528,6 +1530,7 @@ if tsv_file is not None and txt_file is not None:
             group_language=group_language,
             ignore_case=ignore_case,
             ignore_accents=ignore_accents,
+            audio_filename=tsv_file.name,
         )
 
         segment_compilations_df = make_segment_compilations_dataframe(
