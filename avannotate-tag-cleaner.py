@@ -1,4 +1,5 @@
 import io
+import os
 import re
 import unicodedata
 from collections import Counter
@@ -31,7 +32,8 @@ TRANSLATIONS = {
             "Organizations, Places, and Modifications lists. The app first "
             "reorganizes TSV values according to the TXT categories, then removes "
             "values that do not appear in the TXT category lists, applies the "
-            "requested modifications, and adds a combined Tags column."
+            "requested modifications, adds a combined Tags column, and generates "
+            "downloadable entity-reference files."
         ),
         "upload_tsv": "Upload TSV file",
         "upload_txt": "Upload TXT reference list",
@@ -52,11 +54,18 @@ TRANSLATIONS = {
         "case_insensitive": "Ignore capitalization",
         "accent_insensitive": "Ignore accents/diacritics",
         "strip_whitespace": "Ignore extra surrounding whitespace",
+        "tag_categories_settings": "Tag categories TSV settings",
+        "group_language": "Language for the group values",
+        "group_language_help": (
+            "Choose whether the group column in the tag-categories TSV uses "
+            "English, Spanish, or Portuguese category names."
+        ),
         "process": "Clean and reorganize TSV",
         "preview_original": "Original TSV preview",
         "preview_cleaned": "Cleaned TSV preview",
         "reference_summary": "TXT reference-list summary",
         "updated_txt_preview": "Updated TXT entity list preview",
+        "tag_categories_preview": "Tag categories TSV preview",
         "people": "People",
         "organizations": "Organizations",
         "places": "Places",
@@ -82,7 +91,7 @@ TRANSLATIONS = {
         "no_modified": "No values were modified.",
         "download_tsv": "Download cleaned TSV",
         "download_txt": "Download updated TXT entity list",
-        "download_tsv_name": "cleaned.tsv",
+        "download_tag_categories": "Download tag categories TSV",
         "download_txt_name": "updated_entities.txt",
         "missing_files": "Upload both a TSV file and a TXT file to continue.",
         "same_columns_error": (
@@ -91,7 +100,10 @@ TRANSLATIONS = {
         ),
         "tsv_error": "The TSV file could not be read.",
         "txt_error": "The TXT file could not be read.",
-        "success": "The TSV file and updated TXT entity list were generated successfully.",
+        "success": (
+            "The cleaned TSV, updated TXT entity list, and tag categories TSV "
+            "were generated successfully."
+        ),
         "txt_format": "Expected TXT format",
         "unrecognized_content": "Content found before a recognized TXT heading",
         "unrecognized_help": (
@@ -125,7 +137,8 @@ University of Texas -> The University of Texas at Austin
             "Personas, Organizaciones, Lugares y Modificaciones. La aplicación primero "
             "reorganiza los valores del TSV según las categorías del TXT, después "
             "elimina los valores que no aparecen en las listas del TXT, aplica las "
-            "modificaciones solicitadas y añade una columna combinada llamada Tags."
+            "modificaciones solicitadas, añade una columna combinada llamada Tags y "
+            "genera archivos de referencia descargables."
         ),
         "upload_tsv": "Subir archivo TSV",
         "upload_txt": "Subir lista de referencia TXT",
@@ -146,11 +159,18 @@ University of Texas -> The University of Texas at Austin
         "case_insensitive": "Ignorar diferencias entre mayúsculas y minúsculas",
         "accent_insensitive": "Ignorar acentos y signos diacríticos",
         "strip_whitespace": "Ignorar espacios adicionales al principio y al final",
+        "tag_categories_settings": "Configuración del TSV de categorías de etiquetas",
+        "group_language": "Idioma de los valores de la columna group",
+        "group_language_help": (
+            "Seleccione si la columna group del TSV de categorías utiliza "
+            "nombres de categorías en inglés, español o portugués."
+        ),
         "process": "Depurar y reorganizar TSV",
         "preview_original": "Vista previa del TSV original",
         "preview_cleaned": "Vista previa del TSV depurado",
         "reference_summary": "Resumen de la lista de referencia TXT",
         "updated_txt_preview": "Vista previa de la lista TXT actualizada",
+        "tag_categories_preview": "Vista previa del TSV de categorías de etiquetas",
         "people": "Personas",
         "organizations": "Organizaciones",
         "places": "Lugares",
@@ -176,7 +196,7 @@ University of Texas -> The University of Texas at Austin
         "no_modified": "No se modificó ningún valor.",
         "download_tsv": "Descargar TSV depurado",
         "download_txt": "Descargar lista TXT de entidades actualizada",
-        "download_tsv_name": "tsv_depurado.tsv",
+        "download_tag_categories": "Descargar TSV de categorías de etiquetas",
         "download_txt_name": "entidades_actualizadas.txt",
         "missing_files": "Suba un archivo TSV y un archivo TXT para continuar.",
         "same_columns_error": (
@@ -185,7 +205,10 @@ University of Texas -> The University of Texas at Austin
         ),
         "tsv_error": "No se pudo leer el archivo TSV.",
         "txt_error": "No se pudo leer el archivo TXT.",
-        "success": "El TSV y la lista TXT de entidades actualizada se generaron correctamente.",
+        "success": (
+            "El TSV depurado, la lista TXT actualizada y el TSV de categorías "
+            "de etiquetas se generaron correctamente."
+        ),
         "txt_format": "Formato TXT esperado",
         "unrecognized_content": "Contenido encontrado antes de un encabezado TXT reconocido",
         "unrecognized_help": (
@@ -219,7 +242,8 @@ University of Texas -> The University of Texas at Austin
             "de Pessoas, Organizações, Lugares e Modificações. O aplicativo primeiro "
             "reorganiza os valores do TSV de acordo com as categorias do TXT, depois "
             "remove os valores ausentes das listas do TXT, aplica as modificações "
-            "solicitadas e adiciona uma coluna combinada chamada Tags."
+            "solicitadas, adiciona uma coluna combinada chamada Tags e gera arquivos "
+            "de referência para download."
         ),
         "upload_tsv": "Enviar arquivo TSV",
         "upload_txt": "Enviar lista de referência TXT",
@@ -240,11 +264,18 @@ University of Texas -> The University of Texas at Austin
         "case_insensitive": "Ignorar diferenças entre maiúsculas e minúsculas",
         "accent_insensitive": "Ignorar acentos e sinais diacríticos",
         "strip_whitespace": "Ignorar espaços extras no início e no final",
+        "tag_categories_settings": "Configurações do TSV de categorias de tags",
+        "group_language": "Idioma dos valores da coluna group",
+        "group_language_help": (
+            "Escolha se a coluna group do TSV de categorias usa nomes de "
+            "categorias em inglês, espanhol ou português."
+        ),
         "process": "Limpar e reorganizar TSV",
         "preview_original": "Visualização do TSV original",
         "preview_cleaned": "Visualização do TSV limpo",
         "reference_summary": "Resumo da lista de referência TXT",
         "updated_txt_preview": "Visualização da lista TXT atualizada",
+        "tag_categories_preview": "Visualização do TSV de categorias de tags",
         "people": "Pessoas",
         "organizations": "Organizações",
         "places": "Lugares",
@@ -270,7 +301,7 @@ University of Texas -> The University of Texas at Austin
         "no_modified": "Nenhum valor foi modificado.",
         "download_tsv": "Baixar TSV limpo",
         "download_txt": "Baixar lista TXT de entidades atualizada",
-        "download_tsv_name": "tsv_limpo.tsv",
+        "download_tag_categories": "Baixar TSV de categorias de tags",
         "download_txt_name": "entidades_atualizadas.txt",
         "missing_files": "Envie um arquivo TSV e um arquivo TXT para continuar.",
         "same_columns_error": (
@@ -279,7 +310,10 @@ University of Texas -> The University of Texas at Austin
         ),
         "tsv_error": "Não foi possível ler o arquivo TSV.",
         "txt_error": "Não foi possível ler o arquivo TXT.",
-        "success": "O TSV e a lista TXT de entidades atualizada foram gerados com sucesso.",
+        "success": (
+            "O TSV limpo, a lista TXT atualizada e o TSV de categorias de tags "
+            "foram gerados com sucesso."
+        ),
         "txt_format": "Formato TXT esperado",
         "unrecognized_content": "Conteúdo encontrado antes de um cabeçalho TXT reconhecido",
         "unrecognized_help": (
@@ -303,6 +337,29 @@ Modificações
 Mexico -> México
 University of Texas -> The University of Texas at Austin
 """,
+    },
+}
+
+
+# ============================================================
+# TAG CATEGORY LABELS
+# ============================================================
+
+GROUP_LABELS = {
+    "English": {
+        "people": "People",
+        "organizations": "Organizations",
+        "places": "Places",
+    },
+    "Español": {
+        "people": "Personas",
+        "organizations": "Organizaciones",
+        "places": "Lugares",
+    },
+    "Português": {
+        "people": "Pessoas",
+        "organizations": "Organizações",
+        "places": "Lugares",
     },
 }
 
@@ -419,6 +476,26 @@ def read_tsv(uploaded_file):
 
 
 # ============================================================
+# FILENAME HELPERS
+# ============================================================
+
+def get_root_filename(filename):
+    """
+    Return the uploaded filename without its extension.
+
+    Example:
+        interview_entities.tsv
+        -> interview_entities
+    """
+    if not filename:
+        return "cleaned"
+
+    root_name, _ = os.path.splitext(filename)
+
+    return root_name or "cleaned"
+
+
+# ============================================================
 # NORMALIZATION
 # ============================================================
 
@@ -436,7 +513,6 @@ def normalize_value(
     if strip_whitespace:
         value = value.strip()
 
-    # Collapse repeated internal whitespace.
     value = re.sub(r"\s+", " ", value)
 
     if ignore_accents:
@@ -562,7 +638,6 @@ def parse_reference_txt(text):
         else:
             sections[current_section].append(line)
 
-    # Remove exact duplicates while preserving order.
     for section_name in [
         "people",
         "organizations",
@@ -640,7 +715,7 @@ def join_cell_values(
     ignore_accents=False,
 ):
     """
-    Join multiple entity values using the selected cell separator.
+    Join multiple entity values using the selected separator.
     """
     unique_values = deduplicate_values(
         values=values,
@@ -750,10 +825,9 @@ def clean_and_reorganize_dataframe(
 
     STEP 4 — TAGS
         Create a final Tags column combining all resulting values
-        from the People, Organizations, and Places columns.
+        from People, Organizations, and Places.
 
         Tags are separated by exactly:
-
             " | "
     """
 
@@ -788,10 +862,6 @@ def clean_and_reorganize_dataframe(
         "places",
     ]
 
-    # ========================================================
-    # PROCESS ONE TSV ROW AT A TIME
-    # ========================================================
-
     for row_index in cleaned_df.index:
 
         row_output = {
@@ -820,10 +890,10 @@ def clean_and_reorganize_dataframe(
 
                 stats["checked"] += 1
 
-                # ==================================================
+                # --------------------------------------------------
                 # STEP 1:
                 # DETERMINE CATEGORY FROM ORIGINAL TSV VALUE
-                # ==================================================
+                # --------------------------------------------------
 
                 normalized_original = normalize_value(
                     value=original_value,
@@ -836,10 +906,10 @@ def clean_and_reorganize_dataframe(
                     normalized_original
                 )
 
-                # ==================================================
+                # --------------------------------------------------
                 # STEP 2:
                 # DELETE IF ABSENT FROM ALL TXT CATEGORY LISTS
-                # ==================================================
+                # --------------------------------------------------
 
                 if destination_category is None:
 
@@ -855,13 +925,11 @@ def clean_and_reorganize_dataframe(
 
                     continue
 
-                # Use spelling from TXT category list.
                 categorized_value = preferred_spelling_lookup.get(
                     normalized_original,
                     original_value,
                 )
 
-                # Record whether the value stayed or moved.
                 if destination_category == source_category:
 
                     stats["kept"] += 1
@@ -881,10 +949,10 @@ def clean_and_reorganize_dataframe(
                         }
                     )
 
-                # ==================================================
+                # --------------------------------------------------
                 # STEP 3:
                 # APPLY MODIFICATION
-                # ==================================================
+                # --------------------------------------------------
 
                 normalized_categorized_value = normalize_value(
                     value=categorized_value,
@@ -915,17 +983,15 @@ def clean_and_reorganize_dataframe(
 
                     final_value = categorized_value
 
-                # A modification changes the displayed value,
-                # but does not change the category determined earlier.
                 row_output[
                     destination_category
                 ].append(
                     final_value
                 )
 
-        # ====================================================
+        # ----------------------------------------------------
         # WRITE REORGANIZED ENTITY COLUMNS BACK TO TSV
-        # ====================================================
+        # ----------------------------------------------------
 
         for category in entity_categories:
 
@@ -954,8 +1020,6 @@ def clean_and_reorganize_dataframe(
 
         combined_values = []
 
-        # Keep this order:
-        # People → Organizations → Places
         for category in [
             "people",
             "organizations",
@@ -990,11 +1054,9 @@ def clean_and_reorganize_dataframe(
             )
         )
 
-    # If the original TSV already contains a Tags column,
-    # this replaces it with the newly generated final Tags column.
     cleaned_df["Tags"] = tags_values
 
-    # Ensure Tags appears at the very end of the TSV.
+    # Ensure Tags appears at the end.
     columns_without_tags = [
         column
         for column in cleaned_df.columns
@@ -1026,29 +1088,10 @@ def apply_modifications_to_reference_sections(
     strip_whitespace,
 ):
     """
-    Create a new entity reference list with all requested
-    modifications already reflected.
+    Create new reference sections with all modifications reflected.
 
-    Example input:
-
-        Places
-        Mexico
-
-        Modifications
-        Mexico -> México
-
-    Updated TXT output:
-
-        Places
-        México
-
-    The updated TXT contains only:
-        People
-        Organizations
-        Places
-
-    The Modifications section is omitted because its changes
-    have already been incorporated into the entity lists.
+    The resulting TXT omits the Modifications section because the
+    requested replacements have already been incorporated.
     """
 
     modification_lookup = {}
@@ -1100,7 +1143,6 @@ def apply_modifications_to_reference_sections(
                 updated_value
             )
 
-        # Remove duplicates created by modifications.
         updated_sections[
             category
         ] = deduplicate_values(
@@ -1119,17 +1161,14 @@ def make_updated_txt(
     Generate a clean TXT reference list with modifications
     already incorporated.
 
-    Output headings remain in English so that the generated file
-    can be uploaded directly back into this app regardless of the
-    selected interface language.
+    Headings remain in English so the generated TXT can be
+    uploaded directly back into the app regardless of interface
+    language.
     """
 
     lines = []
 
-    lines.append(
-        "People"
-    )
-
+    lines.append("People")
     lines.extend(
         updated_sections[
             "people"
@@ -1137,10 +1176,7 @@ def make_updated_txt(
     )
 
     lines.append("")
-    lines.append(
-        "Organizations"
-    )
-
+    lines.append("Organizations")
     lines.extend(
         updated_sections[
             "organizations"
@@ -1148,10 +1184,7 @@ def make_updated_txt(
     )
 
     lines.append("")
-    lines.append(
-        "Places"
-    )
-
+    lines.append("Places")
     lines.extend(
         updated_sections[
             "places"
@@ -1164,12 +1197,109 @@ def make_updated_txt(
 
 
 # ============================================================
+# TAG CATEGORIES TSV
+# ============================================================
+
+def make_tag_categories_dataframe(
+    updated_sections,
+    group_language,
+    ignore_case,
+    ignore_accents,
+):
+    """
+    Create a two-column TSV table:
+
+        tags
+        group
+
+    Every entity appears as one row.
+
+    The group column uses category labels in the language selected
+    by the user:
+
+        English:
+            People
+            Organizations
+            Places
+
+        Spanish:
+            Personas
+            Organizaciones
+            Lugares
+
+        Portuguese:
+            Pessoas
+            Organizações
+            Lugares
+
+    Duplicate entity/category pairs are removed while preserving
+    category and entity order.
+    """
+
+    group_labels = GROUP_LABELS[
+        group_language
+    ]
+
+    records = []
+
+    seen = set()
+
+    for category in [
+        "people",
+        "organizations",
+        "places",
+    ]:
+
+        group_value = group_labels[
+            category
+        ]
+
+        for entity_value in updated_sections[
+            category
+        ]:
+
+            normalized_entity = normalize_value(
+                value=entity_value,
+                ignore_case=ignore_case,
+                ignore_accents=ignore_accents,
+                strip_whitespace=True,
+            )
+
+            duplicate_key = (
+                normalized_entity,
+                group_value,
+            )
+
+            if duplicate_key in seen:
+                continue
+
+            seen.add(
+                duplicate_key
+            )
+
+            records.append(
+                {
+                    "tags": entity_value,
+                    "group": group_value,
+                }
+            )
+
+    return pd.DataFrame(
+        records,
+        columns=[
+            "tags",
+            "group",
+        ],
+    )
+
+
+# ============================================================
 # DOWNLOAD HELPERS
 # ============================================================
 
 def make_tsv_download(dataframe):
     """
-    Convert the DataFrame to UTF-8 TSV bytes.
+    Convert a DataFrame to UTF-8 TSV bytes.
     """
     return dataframe.to_csv(
         sep="\t",
@@ -1574,6 +1704,26 @@ if (
 
 
     # ========================================================
+    # TAG CATEGORIES TSV SETTINGS
+    # ========================================================
+
+    st.subheader(
+        t["tag_categories_settings"]
+    )
+
+    group_language = st.selectbox(
+        t["group_language"],
+        options=[
+            "English",
+            "Español",
+            "Português",
+        ],
+        index=0,
+        help=t["group_language_help"],
+    )
+
+
+    # ========================================================
     # PROCESS BUTTON
     # ========================================================
 
@@ -1647,6 +1797,35 @@ if (
 
         updated_txt_content = make_updated_txt(
             updated_reference_sections
+        )
+
+
+        # ====================================================
+        # GENERATE TAG CATEGORIES TSV
+        # ====================================================
+
+        tag_categories_df = make_tag_categories_dataframe(
+            updated_sections=updated_reference_sections,
+            group_language=group_language,
+            ignore_case=ignore_case,
+            ignore_accents=ignore_accents,
+        )
+
+
+        # ====================================================
+        # BUILD OUTPUT FILENAMES
+        # ====================================================
+
+        root_filename = get_root_filename(
+            tsv_file.name
+        )
+
+        cleaned_tsv_filename = (
+            f"{root_filename}_cleaned.tsv"
+        )
+
+        tag_categories_filename = (
+            f"{root_filename}_tag_categories.tsv"
         )
 
 
@@ -1909,7 +2088,22 @@ if (
 
 
         # ====================================================
-        # DOWNLOADS
+        # TAG CATEGORIES TSV PREVIEW
+        # ====================================================
+
+        with st.expander(
+            t["tag_categories_preview"]
+        ):
+
+            st.dataframe(
+                tag_categories_df,
+                use_container_width=True,
+                hide_index=True,
+            )
+
+
+        # ====================================================
+        # PREPARE DOWNLOAD DATA
         # ====================================================
 
         cleaned_tsv_bytes = make_tsv_download(
@@ -1920,8 +2114,18 @@ if (
             updated_txt_content
         )
 
+        tag_categories_tsv_bytes = make_tsv_download(
+            tag_categories_df
+        )
 
-        download_col1, download_col2 = st.columns(2)
+
+        # ====================================================
+        # DOWNLOADS
+        # ====================================================
+
+        download_col1, download_col2, download_col3 = (
+            st.columns(3)
+        )
 
 
         with download_col1:
@@ -1929,7 +2133,7 @@ if (
             st.download_button(
                 label=t["download_tsv"],
                 data=cleaned_tsv_bytes,
-                file_name=t["download_tsv_name"],
+                file_name=cleaned_tsv_filename,
                 mime="text/tab-separated-values",
                 type="primary",
                 use_container_width=True,
@@ -1943,6 +2147,18 @@ if (
                 data=updated_txt_bytes,
                 file_name=t["download_txt_name"],
                 mime="text/plain",
+                type="primary",
+                use_container_width=True,
+            )
+
+
+        with download_col3:
+
+            st.download_button(
+                label=t["download_tag_categories"],
+                data=tag_categories_tsv_bytes,
+                file_name=tag_categories_filename,
+                mime="text/tab-separated-values",
                 type="primary",
                 use_container_width=True,
             )
