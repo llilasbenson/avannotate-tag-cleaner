@@ -1,6 +1,7 @@
 import io
 import re
 import unicodedata
+from collections import Counter
 
 import pandas as pd
 import streamlit as st
@@ -11,7 +12,7 @@ import streamlit as st
 # ============================================================
 
 st.set_page_config(
-    page_title="TSV Name List Cleaner",
+    page_title="TSV Entity Cleaner",
     page_icon="🧹",
     layout="wide",
 )
@@ -23,201 +24,347 @@ st.set_page_config(
 
 TRANSLATIONS = {
     "English": {
-        "app_title": "TSV Name List Cleaner",
+        "app_title": "TSV Entity Cleaner",
         "app_description": (
-            "Upload a TSV file containing columns with people, organization, "
-            "and place names, along with a TXT file containing the approved "
-            "values. The app will remove values from the selected TSV columns "
-            "when they are not present in the TXT list."
+            "Upload a TSV file containing people, organization, and place-name "
+            "columns, together with a TXT file containing approved People, "
+            "Organizations, Places, and Modifications lists. The app removes "
+            "unapproved values, moves approved values found in the wrong entity "
+            "column to the correct column, and applies listed modifications."
         ),
         "language": "Interface language",
         "upload_tsv": "Upload TSV file",
-        "upload_txt": "Upload TXT list",
+        "upload_txt": "Upload TXT reference list",
         "tsv_help": "Upload a tab-separated values (.tsv) file.",
         "txt_help": (
-            "Upload a plain-text (.txt) file containing the approved names or "
-            "values, preferably one value per line."
+            "Upload a TXT file with sections for People, Organizations, Places, "
+            "and Modifications."
         ),
-        "settings": "Comparison settings",
-        "select_columns": "Select columns to clean",
-        "select_columns_help": (
-            "Choose the columns containing people, organization, or place names. "
-            "All other columns will remain unchanged."
+        "mapping": "TSV column mapping",
+        "mapping_help": (
+            "Select the TSV column corresponding to each entity category in the TXT file."
         ),
+        "people_column": "TSV column for people",
+        "organizations_column": "TSV column for organizations",
+        "places_column": "TSV column for places",
         "separator": "Separator between multiple values in a TSV cell",
-        "separator_help": (
-            "For example, if a cell contains 'Mexico | Texas | Austin', "
-            "select the pipe character (|)."
-        ),
-        "txt_format": "How are values separated in the TXT file?",
-        "txt_lines": "One value per line",
-        "txt_pipe": "Pipe character (|)",
-        "txt_comma": "Comma",
-        "txt_semicolon": "Semicolon",
+        "comparison_settings": "Comparison settings",
         "case_insensitive": "Ignore capitalization",
         "accent_insensitive": "Ignore accents/diacritics",
         "strip_whitespace": "Ignore extra surrounding whitespace",
-        "remove_empty": "Leave cleaned cells blank when no valid values remain",
-        "preview_list": "Approved-value list preview",
-        "approved_values": "approved values found",
-        "process": "Clean TSV",
+        "process": "Clean and reorganize TSV",
         "preview_original": "Original TSV preview",
         "preview_cleaned": "Cleaned TSV preview",
+        "reference_summary": "TXT reference-list summary",
+        "people": "People",
+        "organizations": "Organizations",
+        "places": "Places",
+        "modifications": "Modifications",
         "results": "Cleaning results",
         "rows": "Rows",
         "values_checked": "Values checked",
         "values_kept": "Values kept",
         "values_removed": "Values removed",
+        "values_moved": "Values moved",
+        "values_modified": "Values modified",
         "removed_values": "Removed values",
-        "removed_value": "Removed value",
-        "column": "Column",
+        "moved_values": "Moved values",
+        "modified_values": "Modified values",
+        "source_column": "Original column",
+        "destination_column": "Destination column",
+        "original_value": "Original value",
+        "new_value": "New value",
+        "value": "Value",
         "count": "Count",
         "no_removed": "No values were removed.",
+        "no_moved": "No values were moved.",
+        "no_modified": "No values were modified.",
         "download": "Download cleaned TSV",
         "download_name": "cleaned.tsv",
         "missing_files": "Upload both a TSV file and a TXT file to continue.",
-        "no_columns": "Select at least one TSV column to clean.",
-        "empty_txt": "The TXT file does not contain any usable values.",
+        "same_columns_error": (
+            "The People, Organizations, and Places mappings must use three different TSV columns."
+        ),
         "tsv_error": "The TSV file could not be read.",
         "txt_error": "The TXT file could not be read.",
-        "success": "The TSV file was cleaned successfully.",
-        "detected_columns": "TSV columns detected",
-        "all_values": "All approved values",
+        "success": "The TSV file was cleaned and reorganized successfully.",
+        "unrecognized_sections": "Unrecognized TXT section headings",
+        "txt_format": "Expected TXT format",
+        "txt_format_example": """People
+Juan Pérez
+María López
+
+Organizations
+University of Texas
+UNESCO
+
+Places
+Mexico
+Austin
+Texas
+
+Modifications
+Méjico -> México
+Univ. of Texas -> University of Texas
+""",
     },
+
     "Español": {
-        "app_title": "Depurador de nombres en TSV",
+        "app_title": "Depurador de entidades en TSV",
         "app_description": (
-            "Suba un archivo TSV con columnas que contengan nombres de personas, "
-            "organizaciones y lugares, junto con un archivo TXT que contenga los "
-            "valores autorizados. La aplicación eliminará de las columnas "
-            "seleccionadas los valores que no aparezcan en la lista TXT."
+            "Suba un archivo TSV con columnas de nombres de personas, organizaciones "
+            "y lugares, junto con un archivo TXT que contenga listas de Personas, "
+            "Organizaciones, Lugares y Modificaciones. La aplicación elimina valores "
+            "no autorizados, mueve los valores autorizados que aparecen en la columna "
+            "incorrecta a la columna correspondiente y aplica las modificaciones indicadas."
         ),
         "language": "Idioma de la interfaz",
         "upload_tsv": "Subir archivo TSV",
-        "upload_txt": "Subir lista TXT",
+        "upload_txt": "Subir lista de referencia TXT",
         "tsv_help": "Suba un archivo de valores separados por tabulaciones (.tsv).",
         "txt_help": (
-            "Suba un archivo de texto (.txt) con los nombres o valores "
-            "autorizados, preferentemente un valor por línea."
+            "Suba un archivo TXT con secciones para Personas, Organizaciones, "
+            "Lugares y Modificaciones."
         ),
-        "settings": "Configuración de la comparación",
-        "select_columns": "Seleccione las columnas que desea depurar",
-        "select_columns_help": (
-            "Seleccione las columnas que contienen nombres de personas, "
-            "organizaciones o lugares. Las demás columnas no se modificarán."
+        "mapping": "Correspondencia de columnas TSV",
+        "mapping_help": (
+            "Seleccione la columna TSV que corresponde a cada categoría del archivo TXT."
         ),
+        "people_column": "Columna TSV para personas",
+        "organizations_column": "Columna TSV para organizaciones",
+        "places_column": "Columna TSV para lugares",
         "separator": "Separador entre varios valores en una celda TSV",
-        "separator_help": (
-            "Por ejemplo, si una celda contiene 'México | Texas | Austin', "
-            "seleccione el carácter de barra vertical (|)."
-        ),
-        "txt_format": "¿Cómo están separados los valores en el archivo TXT?",
-        "txt_lines": "Un valor por línea",
-        "txt_pipe": "Barra vertical (|)",
-        "txt_comma": "Coma",
-        "txt_semicolon": "Punto y coma",
+        "comparison_settings": "Configuración de la comparación",
         "case_insensitive": "Ignorar diferencias entre mayúsculas y minúsculas",
         "accent_insensitive": "Ignorar acentos y signos diacríticos",
         "strip_whitespace": "Ignorar espacios adicionales al principio y al final",
-        "remove_empty": "Dejar la celda en blanco si no queda ningún valor válido",
-        "preview_list": "Vista previa de la lista de valores autorizados",
-        "approved_values": "valores autorizados encontrados",
-        "process": "Depurar TSV",
+        "process": "Depurar y reorganizar TSV",
         "preview_original": "Vista previa del TSV original",
         "preview_cleaned": "Vista previa del TSV depurado",
+        "reference_summary": "Resumen de la lista de referencia TXT",
+        "people": "Personas",
+        "organizations": "Organizaciones",
+        "places": "Lugares",
+        "modifications": "Modificaciones",
         "results": "Resultados de la depuración",
         "rows": "Filas",
         "values_checked": "Valores revisados",
         "values_kept": "Valores conservados",
         "values_removed": "Valores eliminados",
+        "values_moved": "Valores movidos",
+        "values_modified": "Valores modificados",
         "removed_values": "Valores eliminados",
-        "removed_value": "Valor eliminado",
-        "column": "Columna",
+        "moved_values": "Valores movidos",
+        "modified_values": "Valores modificados",
+        "source_column": "Columna original",
+        "destination_column": "Columna de destino",
+        "original_value": "Valor original",
+        "new_value": "Valor nuevo",
+        "value": "Valor",
         "count": "Cantidad",
         "no_removed": "No se eliminó ningún valor.",
+        "no_moved": "No se movió ningún valor.",
+        "no_modified": "No se modificó ningún valor.",
         "download": "Descargar TSV depurado",
         "download_name": "tsv_depurado.tsv",
         "missing_files": "Suba un archivo TSV y un archivo TXT para continuar.",
-        "no_columns": "Seleccione al menos una columna del TSV para depurar.",
-        "empty_txt": "El archivo TXT no contiene valores utilizables.",
+        "same_columns_error": (
+            "Las correspondencias de Personas, Organizaciones y Lugares deben utilizar "
+            "tres columnas TSV diferentes."
+        ),
         "tsv_error": "No se pudo leer el archivo TSV.",
         "txt_error": "No se pudo leer el archivo TXT.",
-        "success": "El archivo TSV se depuró correctamente.",
-        "detected_columns": "Columnas detectadas en el TSV",
-        "all_values": "Todos los valores autorizados",
+        "success": "El archivo TSV se depuró y reorganizó correctamente.",
+        "unrecognized_sections": "Encabezados de sección TXT no reconocidos",
+        "txt_format": "Formato TXT esperado",
+        "txt_format_example": """Personas
+Juan Pérez
+María López
+
+Organizaciones
+University of Texas
+UNESCO
+
+Lugares
+México
+Austin
+Texas
+
+Modificaciones
+Méjico -> México
+Univ. of Texas -> University of Texas
+""",
     },
+
     "Português": {
-        "app_title": "Limpador de nomes em TSV",
+        "app_title": "Limpador de entidades em TSV",
         "app_description": (
-            "Envie um arquivo TSV com colunas que contenham nomes de pessoas, "
-            "organizações e lugares, juntamente com um arquivo TXT contendo os "
-            "valores autorizados. O aplicativo removerá das colunas selecionadas "
-            "os valores que não aparecem na lista TXT."
+            "Envie um arquivo TSV com colunas de nomes de pessoas, organizações "
+            "e lugares, juntamente com um arquivo TXT contendo listas de Pessoas, "
+            "Organizações, Lugares e Modificações. O aplicativo remove valores não "
+            "autorizados, move valores autorizados encontrados na coluna errada para "
+            "a coluna correta e aplica as modificações indicadas."
         ),
         "language": "Idioma da interface",
         "upload_tsv": "Enviar arquivo TSV",
-        "upload_txt": "Enviar lista TXT",
+        "upload_txt": "Enviar lista de referência TXT",
         "tsv_help": "Envie um arquivo de valores separados por tabulação (.tsv).",
         "txt_help": (
-            "Envie um arquivo de texto (.txt) com os nomes ou valores "
-            "autorizados, preferencialmente um valor por linha."
+            "Envie um arquivo TXT com seções para Pessoas, Organizações, "
+            "Lugares e Modificações."
         ),
-        "settings": "Configurações de comparação",
-        "select_columns": "Selecione as colunas para limpar",
-        "select_columns_help": (
-            "Escolha as colunas que contêm nomes de pessoas, organizações ou "
-            "lugares. Todas as outras colunas permanecerão inalteradas."
+        "mapping": "Mapeamento das colunas TSV",
+        "mapping_help": (
+            "Selecione a coluna TSV correspondente a cada categoria do arquivo TXT."
         ),
+        "people_column": "Coluna TSV para pessoas",
+        "organizations_column": "Coluna TSV para organizações",
+        "places_column": "Coluna TSV para lugares",
         "separator": "Separador entre vários valores em uma célula TSV",
-        "separator_help": (
-            "Por exemplo, se uma célula contém 'México | Texas | Austin', "
-            "selecione o caractere de barra vertical (|)."
-        ),
-        "txt_format": "Como os valores estão separados no arquivo TXT?",
-        "txt_lines": "Um valor por linha",
-        "txt_pipe": "Barra vertical (|)",
-        "txt_comma": "Vírgula",
-        "txt_semicolon": "Ponto e vírgula",
+        "comparison_settings": "Configurações de comparação",
         "case_insensitive": "Ignorar diferenças entre maiúsculas e minúsculas",
         "accent_insensitive": "Ignorar acentos e sinais diacríticos",
         "strip_whitespace": "Ignorar espaços extras no início e no final",
-        "remove_empty": "Deixar a célula vazia quando nenhum valor válido permanecer",
-        "preview_list": "Visualização da lista de valores autorizados",
-        "approved_values": "valores autorizados encontrados",
-        "process": "Limpar TSV",
+        "process": "Limpar e reorganizar TSV",
         "preview_original": "Visualização do TSV original",
         "preview_cleaned": "Visualização do TSV limpo",
+        "reference_summary": "Resumo da lista de referência TXT",
+        "people": "Pessoas",
+        "organizations": "Organizações",
+        "places": "Lugares",
+        "modifications": "Modificações",
         "results": "Resultados da limpeza",
         "rows": "Linhas",
         "values_checked": "Valores verificados",
         "values_kept": "Valores mantidos",
         "values_removed": "Valores removidos",
+        "values_moved": "Valores movidos",
+        "values_modified": "Valores modificados",
         "removed_values": "Valores removidos",
-        "removed_value": "Valor removido",
-        "column": "Coluna",
+        "moved_values": "Valores movidos",
+        "modified_values": "Valores modificados",
+        "source_column": "Coluna original",
+        "destination_column": "Coluna de destino",
+        "original_value": "Valor original",
+        "new_value": "Novo valor",
+        "value": "Valor",
         "count": "Quantidade",
         "no_removed": "Nenhum valor foi removido.",
+        "no_moved": "Nenhum valor foi movido.",
+        "no_modified": "Nenhum valor foi modificado.",
         "download": "Baixar TSV limpo",
         "download_name": "tsv_limpo.tsv",
         "missing_files": "Envie um arquivo TSV e um arquivo TXT para continuar.",
-        "no_columns": "Selecione pelo menos uma coluna do TSV para limpar.",
-        "empty_txt": "O arquivo TXT não contém valores utilizáveis.",
+        "same_columns_error": (
+            "Os mapeamentos de Pessoas, Organizações e Lugares devem usar "
+            "três colunas TSV diferentes."
+        ),
         "tsv_error": "Não foi possível ler o arquivo TSV.",
         "txt_error": "Não foi possível ler o arquivo TXT.",
-        "success": "O arquivo TSV foi limpo com sucesso.",
-        "detected_columns": "Colunas detectadas no TSV",
-        "all_values": "Todos os valores autorizados",
+        "success": "O arquivo TSV foi limpo e reorganizado com sucesso.",
+        "unrecognized_sections": "Cabeçalhos de seção TXT não reconhecidos",
+        "txt_format": "Formato TXT esperado",
+        "txt_format_example": """Pessoas
+Juan Pérez
+María López
+
+Organizações
+University of Texas
+UNESCO
+
+Lugares
+México
+Austin
+Texas
+
+Modificações
+Méjico -> México
+Univ. of Texas -> University of Texas
+""",
     },
 }
 
 
 # ============================================================
-# HELPER FUNCTIONS
+# TXT SECTION HEADING ALIASES
+# ============================================================
+
+# These aliases allow the TXT section headings themselves to be written
+# in English, Spanish, or Portuguese.
+
+SECTION_ALIASES = {
+    "people": {
+        "people",
+        "person",
+        "persons",
+        "personas",
+        "persona",
+        "pessoas",
+        "pessoa",
+        "people names",
+        "person names",
+        "nombres de personas",
+        "nomes de pessoas",
+    },
+
+    "organizations": {
+        "organizations",
+        "organization",
+        "organisations",
+        "organisation",
+        "organizaciones",
+        "organización",
+        "organizacoes",
+        "organizações",
+        "organização",
+        "organization names",
+        "organisation names",
+        "nombres de organizaciones",
+        "nomes de organizações",
+    },
+
+    "places": {
+        "places",
+        "place",
+        "locations",
+        "location",
+        "lugares",
+        "lugar",
+        "locales",
+        "locais",
+        "place names",
+        "location names",
+        "nombres de lugares",
+        "nomes de lugares",
+    },
+
+    "modifications": {
+        "modifications",
+        "modification",
+        "changes",
+        "corrections",
+        "modificaciones",
+        "modificación",
+        "cambios",
+        "correcciones",
+        "modificacoes",
+        "modificações",
+        "modificação",
+        "alteracoes",
+        "alterações",
+        "correcoes",
+        "correções",
+    },
+}
+
+
+# ============================================================
+# FILE READING
 # ============================================================
 
 def decode_uploaded_file(uploaded_file):
     """
-    Decode an uploaded text file while supporting common encodings.
+    Decode an uploaded text file using several common encodings.
     """
     raw_bytes = uploaded_file.getvalue()
 
@@ -234,18 +381,12 @@ def decode_uploaded_file(uploaded_file):
         except UnicodeDecodeError:
             continue
 
-    raise UnicodeDecodeError(
-        "unknown",
-        raw_bytes,
-        0,
-        len(raw_bytes),
-        "Unable to decode file",
-    )
+    raise ValueError("Unable to decode uploaded file.")
 
 
 def read_tsv(uploaded_file):
     """
-    Read a TSV as strings so that textual content is preserved.
+    Read the TSV entirely as strings.
     """
     text = decode_uploaded_file(uploaded_file)
 
@@ -258,6 +399,10 @@ def read_tsv(uploaded_file):
     )
 
 
+# ============================================================
+# NORMALIZATION
+# ============================================================
+
 def normalize_value(
     value,
     ignore_case=True,
@@ -267,14 +412,16 @@ def normalize_value(
     """
     Normalize a value for comparison only.
 
-    The original spelling from the TSV is preserved in the output.
+    The spelling retained in the final TSV comes from either:
+    1. the approved TXT list, or
+    2. the right-hand side of a modification rule.
     """
     value = str(value)
 
     if strip_whitespace:
         value = value.strip()
 
-    # Normalize repeated internal whitespace.
+    # Collapse repeated internal whitespace.
     value = re.sub(r"\s+", " ", value)
 
     if ignore_accents:
@@ -290,42 +437,154 @@ def normalize_value(
     return value
 
 
-def parse_txt_values(text, format_option):
+def normalize_heading(value):
     """
-    Parse the approved values from the TXT file.
+    Normalize TXT section headings.
     """
-    if format_option == "lines":
-        raw_values = text.splitlines()
-    elif format_option == "pipe":
-        raw_values = text.split("|")
-    elif format_option == "comma":
-        raw_values = text.split(",")
-    elif format_option == "semicolon":
-        raw_values = text.split(";")
-    else:
-        raw_values = text.splitlines()
+    value = str(value).strip().casefold()
 
-    return [
-        value.strip()
-        for value in raw_values
-        if value.strip()
-    ]
+    value = "".join(
+        character
+        for character in unicodedata.normalize("NFKD", value)
+        if not unicodedata.combining(character)
+    )
 
+    value = re.sub(r"[:\-_]+$", "", value)
+    value = re.sub(r"\s+", " ", value)
+
+    return value.strip()
+
+
+# ============================================================
+# TXT PARSING
+# ============================================================
+
+def identify_section_heading(line):
+    """
+    Return the canonical section name when a line is recognized
+    as a TXT section heading.
+    """
+    normalized_line = normalize_heading(line)
+
+    for section_name, aliases in SECTION_ALIASES.items():
+        normalized_aliases = {
+            normalize_heading(alias)
+            for alias in aliases
+        }
+
+        if normalized_line in normalized_aliases:
+            return section_name
+
+    return None
+
+
+def parse_reference_txt(text):
+    """
+    Parse the TXT file into:
+
+        {
+            "people": [...],
+            "organizations": [...],
+            "places": [...],
+            "modifications": [(old, new), ...]
+        }
+
+    Expected structure:
+
+        People
+        Juan Pérez
+        María López
+
+        Organizations
+        University of Texas
+
+        Places
+        Mexico
+        Austin
+
+        Modifications
+        Méjico -> México
+        Univ. of Texas -> University of Texas
+    """
+    sections = {
+        "people": [],
+        "organizations": [],
+        "places": [],
+        "modifications": [],
+    }
+
+    current_section = None
+    unrecognized_content = []
+
+    for raw_line in text.splitlines():
+
+        line = raw_line.strip()
+
+        if not line:
+            continue
+
+        section_heading = identify_section_heading(line)
+
+        if section_heading:
+            current_section = section_heading
+            continue
+
+        if current_section is None:
+            unrecognized_content.append(line)
+            continue
+
+        if current_section == "modifications":
+
+            if "->" not in line:
+                # Ignore malformed modification lines.
+                continue
+
+            old_value, new_value = line.split("->", 1)
+
+            old_value = old_value.strip()
+            new_value = new_value.strip()
+
+            if old_value and new_value:
+                sections["modifications"].append(
+                    (old_value, new_value)
+                )
+
+        else:
+            sections[current_section].append(line)
+
+    # Remove exact duplicates while preserving order.
+    for section_name in [
+        "people",
+        "organizations",
+        "places",
+    ]:
+        sections[section_name] = list(
+            dict.fromkeys(sections[section_name])
+        )
+
+    # Remove duplicate modification pairs while preserving order.
+    sections["modifications"] = list(
+        dict.fromkeys(sections["modifications"])
+    )
+
+    return sections, unrecognized_content
+
+
+# ============================================================
+# CELL PROCESSING
+# ============================================================
 
 def split_cell_values(cell, separator):
     """
-    Split a TSV cell containing multiple values.
+    Split a TSV entity cell into individual values.
     """
     if cell is None:
         return []
 
-    cell = str(cell)
+    cell = str(cell).strip()
 
-    if not cell.strip():
+    if not cell:
         return []
-
-    if separator == "":
-        return [cell.strip()]
 
     return [
         value.strip()
@@ -334,83 +593,316 @@ def split_cell_values(cell, separator):
     ]
 
 
-def clean_dataframe(
-    dataframe,
-    columns_to_clean,
-    approved_normalized_values,
-    cell_separator,
+def join_cell_values(values, separator):
+    """
+    Join entity values while removing duplicates and preserving order.
+    """
+    unique_values = []
+
+    seen = set()
+
+    for value in values:
+
+        comparison_key = value.casefold()
+
+        if comparison_key not in seen:
+            seen.add(comparison_key)
+            unique_values.append(value)
+
+    return f" {separator} ".join(unique_values)
+
+
+# ============================================================
+# LOOKUP TABLE CONSTRUCTION
+# ============================================================
+
+def build_reference_lookups(
+    reference_sections,
     ignore_case,
     ignore_accents,
     strip_whitespace,
 ):
     """
-    Remove values from selected columns when their normalized forms
-    are not present in the approved TXT list.
+    Build normalized lookups for:
+    - entity category
+    - preferred TXT spelling
+    - modifications
+
+    Modification behavior:
+    The left-hand value is converted to the right-hand value before
+    entity classification.
+
+    For example:
+
+        Méjico -> México
+
+    A TSV value of "Méjico" becomes "México", and "México" is then
+    classified according to the approved People, Organizations, or
+    Places list.
     """
+
+    category_lookup = {}
+    preferred_spelling_lookup = {}
+
+    for category in [
+        "people",
+        "organizations",
+        "places",
+    ]:
+
+        for value in reference_sections[category]:
+
+            normalized = normalize_value(
+                value,
+                ignore_case=ignore_case,
+                ignore_accents=ignore_accents,
+                strip_whitespace=strip_whitespace,
+            )
+
+            category_lookup[normalized] = category
+            preferred_spelling_lookup[normalized] = value
+
+    modification_lookup = {}
+
+    for old_value, new_value in reference_sections["modifications"]:
+
+        normalized_old = normalize_value(
+            old_value,
+            ignore_case=ignore_case,
+            ignore_accents=ignore_accents,
+            strip_whitespace=strip_whitespace,
+        )
+
+        modification_lookup[normalized_old] = new_value
+
+    return (
+        category_lookup,
+        preferred_spelling_lookup,
+        modification_lookup,
+    )
+
+
+# ============================================================
+# MAIN CLEANING LOGIC
+# ============================================================
+
+def clean_and_reorganize_dataframe(
+    dataframe,
+    category_columns,
+    reference_sections,
+    separator,
+    ignore_case,
+    ignore_accents,
+    strip_whitespace,
+):
+    """
+    Clean the three mapped TSV entity columns row by row.
+
+    Processing order for each individual TSV value:
+
+    1. Apply a TXT modification if one exists.
+    2. Determine whether the resulting value belongs to People,
+       Organizations, or Places.
+    3. Remove it if it does not occur in any approved TXT entity list.
+    4. Keep it in place if it is already in the correct TSV column.
+    5. Move it to the correct TSV column if it appears in the wrong one.
+
+    This preserves entity associations within the same TSV row.
+    """
+
     cleaned_df = dataframe.copy()
 
-    removed_records = []
+    (
+        category_lookup,
+        preferred_spelling_lookup,
+        modification_lookup,
+    ) = build_reference_lookups(
+        reference_sections=reference_sections,
+        ignore_case=ignore_case,
+        ignore_accents=ignore_accents,
+        strip_whitespace=strip_whitespace,
+    )
 
     stats = {
         "checked": 0,
         "kept": 0,
         "removed": 0,
+        "moved": 0,
+        "modified": 0,
     }
 
-    for column in columns_to_clean:
+    removed_records = []
+    moved_records = []
+    modified_records = []
 
-        cleaned_column = []
+    entity_categories = [
+        "people",
+        "organizations",
+        "places",
+    ]
 
-        for cell in cleaned_df[column]:
+    # --------------------------------------------------------
+    # Process one row at a time
+    # --------------------------------------------------------
+
+    for row_index in cleaned_df.index:
+
+        # New entity values that will replace the original three cells.
+        row_output = {
+            "people": [],
+            "organizations": [],
+            "places": [],
+        }
+
+        for source_category in entity_categories:
+
+            source_column = category_columns[source_category]
+
+            original_cell = cleaned_df.at[
+                row_index,
+                source_column,
+            ]
 
             values = split_cell_values(
-                cell=cell,
-                separator=cell_separator,
+                original_cell,
+                separator,
             )
 
-            kept_values = []
-
-            for value in values:
+            for original_value in values:
 
                 stats["checked"] += 1
 
-                normalized = normalize_value(
-                    value=value,
+                working_value = original_value
+
+                # --------------------------------------------
+                # STEP 1: Apply modification rule
+                # --------------------------------------------
+
+                normalized_original = normalize_value(
+                    working_value,
                     ignore_case=ignore_case,
                     ignore_accents=ignore_accents,
                     strip_whitespace=strip_whitespace,
                 )
 
-                if normalized in approved_normalized_values:
-                    kept_values.append(value)
-                    stats["kept"] += 1
+                if normalized_original in modification_lookup:
 
-                else:
+                    modified_value = modification_lookup[
+                        normalized_original
+                    ]
+
+                    if modified_value != working_value:
+
+                        stats["modified"] += 1
+
+                        modified_records.append(
+                            {
+                                "row": row_index + 1,
+                                "original_value": working_value,
+                                "new_value": modified_value,
+                            }
+                        )
+
+                    working_value = modified_value
+
+                # --------------------------------------------
+                # STEP 2: Identify approved entity category
+                # --------------------------------------------
+
+                normalized_working = normalize_value(
+                    working_value,
+                    ignore_case=ignore_case,
+                    ignore_accents=ignore_accents,
+                    strip_whitespace=strip_whitespace,
+                )
+
+                destination_category = category_lookup.get(
+                    normalized_working
+                )
+
+                # --------------------------------------------
+                # STEP 3: Remove unapproved values
+                # --------------------------------------------
+
+                if destination_category is None:
+
                     stats["removed"] += 1
 
                     removed_records.append(
                         {
-                            "column": column,
-                            "value": value,
+                            "row": row_index + 1,
+                            "source_column": source_column,
+                            "value": working_value,
                         }
                     )
 
-            cleaned_cell = (
-                f" {cell_separator} ".join(kept_values)
-                if cell_separator
-                else "".join(kept_values)
+                    continue
+
+                # Use the preferred spelling from the TXT list.
+                final_value = preferred_spelling_lookup.get(
+                    normalized_working,
+                    working_value,
+                )
+
+                # --------------------------------------------
+                # STEP 4/5: Keep or move
+                # --------------------------------------------
+
+                row_output[
+                    destination_category
+                ].append(final_value)
+
+                if destination_category == source_category:
+
+                    stats["kept"] += 1
+
+                else:
+
+                    stats["moved"] += 1
+
+                    moved_records.append(
+                        {
+                            "row": row_index + 1,
+                            "value": final_value,
+                            "source_column": source_column,
+                            "destination_column": category_columns[
+                                destination_category
+                            ],
+                        }
+                    )
+
+        # ----------------------------------------------------
+        # Replace all three entity cells for this row
+        # ----------------------------------------------------
+
+        for category in entity_categories:
+
+            column_name = category_columns[category]
+
+            cleaned_df.at[
+                row_index,
+                column_name,
+            ] = join_cell_values(
+                row_output[category],
+                separator,
             )
 
-            cleaned_column.append(cleaned_cell)
+    return (
+        cleaned_df,
+        stats,
+        removed_records,
+        moved_records,
+        modified_records,
+    )
 
-        cleaned_df[column] = cleaned_column
 
-    return cleaned_df, removed_records, stats
-
+# ============================================================
+# DOWNLOAD
+# ============================================================
 
 def make_tsv_download(dataframe):
     """
-    Convert a DataFrame to UTF-8 TSV bytes.
+    Convert the DataFrame to UTF-8 TSV bytes.
     """
     return dataframe.to_csv(
         sep="\t",
@@ -425,7 +917,11 @@ def make_tsv_download(dataframe):
 
 language = st.selectbox(
     "Language / Idioma",
-    options=["English", "Español", "Português"],
+    options=[
+        "English",
+        "Español",
+        "Português",
+    ],
 )
 
 t = TRANSLATIONS[language]
@@ -449,6 +945,7 @@ st.divider()
 upload_col1, upload_col2 = st.columns(2)
 
 with upload_col1:
+
     tsv_file = st.file_uploader(
         t["upload_tsv"],
         type=["tsv"],
@@ -456,10 +953,23 @@ with upload_col1:
     )
 
 with upload_col2:
+
     txt_file = st.file_uploader(
         t["upload_txt"],
         type=["txt"],
         help=t["txt_help"],
+    )
+
+
+# ============================================================
+# TXT FORMAT EXAMPLE
+# ============================================================
+
+with st.expander(t["txt_format"]):
+
+    st.code(
+        t["txt_format_example"],
+        language="text",
     )
 
 
@@ -469,57 +979,156 @@ with upload_col2:
 
 if tsv_file is not None and txt_file is not None:
 
-    # -------------------------
+    # --------------------------------------------------------
     # Read TSV
-    # -------------------------
+    # --------------------------------------------------------
 
     try:
+
         df = read_tsv(tsv_file)
 
     except Exception as error:
-        st.error(f"{t['tsv_error']} {error}")
+
+        st.error(
+            f"{t['tsv_error']} {error}"
+        )
+
         st.stop()
 
-    # -------------------------
+    # --------------------------------------------------------
     # Read TXT
-    # -------------------------
+    # --------------------------------------------------------
 
     try:
-        txt_content = decode_uploaded_file(txt_file)
+
+        txt_content = decode_uploaded_file(
+            txt_file
+        )
+
+        (
+            reference_sections,
+            unrecognized_content,
+        ) = parse_reference_txt(
+            txt_content
+        )
 
     except Exception as error:
-        st.error(f"{t['txt_error']} {error}")
+
+        st.error(
+            f"{t['txt_error']} {error}"
+        )
+
         st.stop()
 
-    # -------------------------
-    # Original preview
-    # -------------------------
 
-    st.subheader(t["preview_original"])
+    # ========================================================
+    # ORIGINAL TSV PREVIEW
+    # ========================================================
+
+    st.subheader(
+        t["preview_original"]
+    )
 
     st.dataframe(
         df.head(100),
         use_container_width=True,
     )
 
-    st.caption(
-        f"{t['detected_columns']}: "
-        + " | ".join(str(column) for column in df.columns)
+
+    # ========================================================
+    # TXT REFERENCE SUMMARY
+    # ========================================================
+
+    st.subheader(
+        t["reference_summary"]
     )
 
+    summary_col1, summary_col2, summary_col3, summary_col4 = (
+        st.columns(4)
+    )
+
+    summary_col1.metric(
+        t["people"],
+        len(reference_sections["people"]),
+    )
+
+    summary_col2.metric(
+        t["organizations"],
+        len(reference_sections["organizations"]),
+    )
+
+    summary_col3.metric(
+        t["places"],
+        len(reference_sections["places"]),
+    )
+
+    summary_col4.metric(
+        t["modifications"],
+        len(reference_sections["modifications"]),
+    )
+
+
+    # ========================================================
+    # COLUMN MAPPING
+    # ========================================================
+
     st.divider()
+
+    st.subheader(
+        t["mapping"]
+    )
+
+    st.caption(
+        t["mapping_help"]
+    )
+
+    column_names = list(df.columns)
+
+    map_col1, map_col2, map_col3 = st.columns(3)
+
+    with map_col1:
+
+        people_column = st.selectbox(
+            t["people_column"],
+            options=column_names,
+            index=0,
+        )
+
+    with map_col2:
+
+        default_org_index = (
+            1
+            if len(column_names) > 1
+            else 0
+        )
+
+        organizations_column = st.selectbox(
+            t["organizations_column"],
+            options=column_names,
+            index=default_org_index,
+        )
+
+    with map_col3:
+
+        default_place_index = (
+            2
+            if len(column_names) > 2
+            else 0
+        )
+
+        places_column = st.selectbox(
+            t["places_column"],
+            options=column_names,
+            index=default_place_index,
+        )
 
 
     # ========================================================
     # SETTINGS
     # ========================================================
 
-    st.subheader(t["settings"])
-
-    selected_columns = st.multiselect(
-        t["select_columns"],
-        options=list(df.columns),
-        help=t["select_columns_help"],
+    st.subheader(
+        t["comparison_settings"]
     )
 
     settings_col1, settings_col2 = st.columns(2)
@@ -534,30 +1143,14 @@ if tsv_file is not None and txt_file is not None:
 
         selected_separator_label = st.selectbox(
             t["separator"],
-            options=list(separator_options.keys()),
+            options=list(
+                separator_options.keys()
+            ),
             index=0,
-            help=t["separator_help"],
         )
 
-        cell_separator = separator_options[
+        separator = separator_options[
             selected_separator_label
-        ]
-
-        txt_format_labels = {
-            t["txt_lines"]: "lines",
-            t["txt_pipe"]: "pipe",
-            t["txt_comma"]: "comma",
-            t["txt_semicolon"]: "semicolon",
-        }
-
-        selected_txt_format_label = st.selectbox(
-            t["txt_format"],
-            options=list(txt_format_labels.keys()),
-            index=0,
-        )
-
-        txt_format = txt_format_labels[
-            selected_txt_format_label
         ]
 
     with settings_col2:
@@ -579,50 +1172,7 @@ if tsv_file is not None and txt_file is not None:
 
 
     # ========================================================
-    # PARSE APPROVED TXT VALUES
-    # ========================================================
-
-    approved_values = parse_txt_values(
-        text=txt_content,
-        format_option=txt_format,
-    )
-
-    # Remove duplicates while preserving original order.
-    approved_values = list(dict.fromkeys(approved_values))
-
-    if not approved_values:
-        st.warning(t["empty_txt"])
-        st.stop()
-
-    approved_normalized_values = {
-        normalize_value(
-            value=value,
-            ignore_case=ignore_case,
-            ignore_accents=ignore_accents,
-            strip_whitespace=strip_whitespace,
-        )
-        for value in approved_values
-    }
-
-    with st.expander(
-        f"{t['preview_list']} — "
-        f"{len(approved_values):,} {t['approved_values']}"
-    ):
-        approved_preview_df = pd.DataFrame(
-            {
-                t["all_values"]: approved_values
-            }
-        )
-
-        st.dataframe(
-            approved_preview_df,
-            use_container_width=True,
-            hide_index=True,
-        )
-
-
-    # ========================================================
-    # CLEAN TSV
+    # PROCESS BUTTON
     # ========================================================
 
     if st.button(
@@ -631,59 +1181,103 @@ if tsv_file is not None and txt_file is not None:
         use_container_width=True,
     ):
 
-        if not selected_columns:
-            st.warning(t["no_columns"])
+        selected_entity_columns = [
+            people_column,
+            organizations_column,
+            places_column,
+        ]
+
+        if len(
+            set(selected_entity_columns)
+        ) != 3:
+
+            st.error(
+                t["same_columns_error"]
+            )
+
             st.stop()
 
-        cleaned_df, removed_records, stats = clean_dataframe(
+        category_columns = {
+            "people": people_column,
+            "organizations": organizations_column,
+            "places": places_column,
+        }
+
+        (
+            cleaned_df,
+            stats,
+            removed_records,
+            moved_records,
+            modified_records,
+        ) = clean_and_reorganize_dataframe(
             dataframe=df,
-            columns_to_clean=selected_columns,
-            approved_normalized_values=approved_normalized_values,
-            cell_separator=cell_separator,
+            category_columns=category_columns,
+            reference_sections=reference_sections,
+            separator=separator,
             ignore_case=ignore_case,
             ignore_accents=ignore_accents,
             strip_whitespace=strip_whitespace,
         )
 
-        st.success(t["success"])
-
-
-        # ====================================================
-        # RESULTS SUMMARY
-        # ====================================================
-
-        st.subheader(t["results"])
-
-        metric_col1, metric_col2, metric_col3, metric_col4 = (
-            st.columns(4)
+        st.success(
+            t["success"]
         )
 
-        metric_col1.metric(
+
+        # ====================================================
+        # RESULTS
+        # ====================================================
+
+        st.subheader(
+            t["results"]
+        )
+
+        result_col1, result_col2, result_col3 = (
+            st.columns(3)
+        )
+
+        result_col1.metric(
             t["rows"],
             f"{len(cleaned_df):,}",
         )
 
-        metric_col2.metric(
+        result_col2.metric(
             t["values_checked"],
             f"{stats['checked']:,}",
         )
 
-        metric_col3.metric(
+        result_col3.metric(
             t["values_kept"],
             f"{stats['kept']:,}",
         )
 
-        metric_col4.metric(
+        result_col4, result_col5, result_col6 = (
+            st.columns(3)
+        )
+
+        result_col4.metric(
             t["values_removed"],
             f"{stats['removed']:,}",
         )
 
+        result_col5.metric(
+            t["values_moved"],
+            f"{stats['moved']:,}",
+        )
+
+        result_col6.metric(
+            t["values_modified"],
+            f"{stats['modified']:,}",
+        )
+
 
         # ====================================================
-        # CLEANED FILE PREVIEW
+        # CLEANED TSV PREVIEW
         # ====================================================
 
-        st.subheader(t["preview_cleaned"])
+        st.subheader(
+            t["preview_cleaned"]
+        )
 
         st.dataframe(
             cleaned_df.head(100),
@@ -692,44 +1286,148 @@ if tsv_file is not None and txt_file is not None:
 
 
         # ====================================================
-        # REMOVED VALUE REPORT
+        # MOVED VALUES REPORT
         # ====================================================
 
-        st.subheader(t["removed_values"])
+        with st.expander(
+            f"{t['moved_values']} ({stats['moved']:,})"
+        ):
 
-        if removed_records:
+            if moved_records:
 
-            removed_df = pd.DataFrame(removed_records)
-
-            removed_summary = (
-                removed_df
-                .groupby(
-                    ["column", "value"],
-                    dropna=False,
+                moved_df = pd.DataFrame(
+                    moved_records
                 )
-                .size()
-                .reset_index(name="count")
-                .sort_values(
-                    ["column", "count", "value"],
-                    ascending=[True, False, True],
-                )
-                .rename(
-                    columns={
-                        "column": t["column"],
-                        "value": t["removed_value"],
-                        "count": t["count"],
-                    }
-                )
-            )
 
-            st.dataframe(
-                removed_summary,
-                use_container_width=True,
-                hide_index=True,
-            )
+                moved_summary = (
+                    moved_df
+                    .groupby(
+                        [
+                            "value",
+                            "source_column",
+                            "destination_column",
+                        ],
+                        dropna=False,
+                    )
+                    .size()
+                    .reset_index(
+                        name="count"
+                    )
+                    .rename(
+                        columns={
+                            "value": t["value"],
+                            "source_column": t["source_column"],
+                            "destination_column": t["destination_column"],
+                            "count": t["count"],
+                        }
+                    )
+                )
 
-        else:
-            st.info(t["no_removed"])
+                st.dataframe(
+                    moved_summary,
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            else:
+
+                st.info(
+                    t["no_moved"]
+                )
+
+
+        # ====================================================
+        # MODIFIED VALUES REPORT
+        # ====================================================
+
+        with st.expander(
+            f"{t['modified_values']} ({stats['modified']:,})"
+        ):
+
+            if modified_records:
+
+                modification_counter = Counter(
+                    (
+                        record["original_value"],
+                        record["new_value"],
+                    )
+                    for record in modified_records
+                )
+
+                modification_summary = pd.DataFrame(
+                    [
+                        {
+                            t["original_value"]: old_value,
+                            t["new_value"]: new_value,
+                            t["count"]: count,
+                        }
+                        for (
+                            old_value,
+                            new_value,
+                        ), count in modification_counter.items()
+                    ]
+                )
+
+                st.dataframe(
+                    modification_summary,
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            else:
+
+                st.info(
+                    t["no_modified"]
+                )
+
+
+        # ====================================================
+        # REMOVED VALUES REPORT
+        # ====================================================
+
+        with st.expander(
+            f"{t['removed_values']} ({stats['removed']:,})"
+        ):
+
+            if removed_records:
+
+                removed_df = pd.DataFrame(
+                    removed_records
+                )
+
+                removed_summary = (
+                    removed_df
+                    .groupby(
+                        [
+                            "source_column",
+                            "value",
+                        ],
+                        dropna=False,
+                    )
+                    .size()
+                    .reset_index(
+                        name="count"
+                    )
+                    .rename(
+                        columns={
+                            "source_column": t["source_column"],
+                            "value": t["value"],
+                            "count": t["count"],
+                        }
+                    )
+                )
+
+                st.dataframe(
+                    removed_summary,
+                    use_container_width=True,
+                    hide_index=True,
+                )
+
+            else:
+
+                st.info(
+                    t["no_removed"]
+                )
 
 
         # ====================================================
@@ -750,4 +1448,7 @@ if tsv_file is not None and txt_file is not None:
         )
 
 else:
-    st.info(t["missing_files"])
+
+    st.info(
+        t["missing_files"]
+    )
