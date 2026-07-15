@@ -124,7 +124,7 @@ TRANSLATIONS = {
         "download_tsv": "Download cleaned TSV",
         "download_txt": "Download updated TXT entity list",
         "download_tag_categories": "Download tag groups TSV",
-        "download_annotation_review": "Download annotation review TSV",
+        "download_annotation_review": "Download segment compilations TSV",
 
         "download_txt_name": "updated_entities.txt",
 
@@ -305,7 +305,7 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "download_annotation_review": (
-            "Descargar TSV de revisión de anotaciones"
+            "Descargar TSV de las compilaciones de segmentos"
         ),
 
         "download_txt_name": "entidades_actualizadas.txt",
@@ -488,7 +488,7 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "download_annotation_review": (
-            "Baixar TSV de revisão de anotações"
+            "Baixar TSV de compilações de segmentos"
         ),
 
         "download_txt_name": "entidades_atualizadas.txt",
