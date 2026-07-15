@@ -482,10 +482,6 @@ def read_tsv(uploaded_file):
 def get_root_filename(filename):
     """
     Return the uploaded filename without its extension.
-
-    Example:
-        interview_entities.tsv
-        -> interview_entities
     """
     if not filename:
         return "cleaned"
@@ -574,23 +570,6 @@ def identify_section_heading(line):
 def parse_reference_txt(text):
     """
     Parse the TXT reference file.
-
-    Expected structure:
-
-        People
-        Juan Pérez
-        María López
-
-        Organizations
-        University of Texas
-
-        Places
-        Mexico
-        Austin
-
-        Modifications
-        Mexico -> México
-        Univ. of Texas -> University of Texas
     """
 
     sections = {
@@ -742,18 +721,6 @@ def build_reference_lookups(
     1. Entity category.
     2. Preferred TXT spelling.
     3. Modifications.
-
-    Processing order:
-
-        Original TSV value
-            ↓
-        Determine TXT category
-            ↓
-        Move to correct TSV column
-            ↓
-        Delete if absent from all category lists
-            ↓
-        Apply modification
     """
 
     category_lookup = {}
@@ -810,25 +777,12 @@ def clean_and_reorganize_dataframe(
     strip_whitespace,
 ):
     """
-    Process the TSV in this exact order:
+    Process the TSV in this order:
 
-    STEP 1 — REORGANIZE
-        Determine the category of each original TSV value using
-        the TXT People, Organizations, and Places lists.
-
-    STEP 2 — DELETE
-        Remove values absent from all three TXT category lists.
-
-    STEP 3 — MODIFY
-        Apply matching old value -> new value rules only after
-        category validation and reorganization.
-
-    STEP 4 — TAGS
-        Create a final Tags column combining all resulting values
-        from People, Organizations, and Places.
-
-        Tags are separated by exactly:
-            " | "
+    1. Reorganize according to TXT categories.
+    2. Delete values absent from all TXT entity lists.
+    3. Apply modifications.
+    4. Create a Tags column.
     """
 
     cleaned_df = dataframe.copy()
@@ -890,11 +844,6 @@ def clean_and_reorganize_dataframe(
 
                 stats["checked"] += 1
 
-                # --------------------------------------------------
-                # STEP 1:
-                # DETERMINE CATEGORY FROM ORIGINAL TSV VALUE
-                # --------------------------------------------------
-
                 normalized_original = normalize_value(
                     value=original_value,
                     ignore_case=ignore_case,
@@ -905,11 +854,6 @@ def clean_and_reorganize_dataframe(
                 destination_category = category_lookup.get(
                     normalized_original
                 )
-
-                # --------------------------------------------------
-                # STEP 2:
-                # DELETE IF ABSENT FROM ALL TXT CATEGORY LISTS
-                # --------------------------------------------------
 
                 if destination_category is None:
 
@@ -949,11 +893,6 @@ def clean_and_reorganize_dataframe(
                         }
                     )
 
-                # --------------------------------------------------
-                # STEP 3:
-                # APPLY MODIFICATION
-                # --------------------------------------------------
-
                 normalized_categorized_value = normalize_value(
                     value=categorized_value,
                     ignore_case=ignore_case,
@@ -989,10 +928,6 @@ def clean_and_reorganize_dataframe(
                     final_value
                 )
 
-        # ----------------------------------------------------
-        # WRITE REORGANIZED ENTITY COLUMNS BACK TO TSV
-        # ----------------------------------------------------
-
         for category in entity_categories:
 
             column_name = category_columns[
@@ -1010,7 +945,6 @@ def clean_and_reorganize_dataframe(
             )
 
     # ========================================================
-    # STEP 4:
     # CREATE FINAL TAGS COLUMN
     # ========================================================
 
@@ -1056,7 +990,6 @@ def clean_and_reorganize_dataframe(
 
     cleaned_df["Tags"] = tags_values
 
-    # Ensure Tags appears at the end.
     columns_without_tags = [
         column
         for column in cleaned_df.columns
@@ -1088,10 +1021,7 @@ def apply_modifications_to_reference_sections(
     strip_whitespace,
 ):
     """
-    Create new reference sections with all modifications reflected.
-
-    The resulting TXT omits the Modifications section because the
-    requested replacements have already been incorporated.
+    Create new reference sections with modifications already reflected.
     """
 
     modification_lookup = {}
@@ -1158,12 +1088,7 @@ def make_updated_txt(
     updated_sections,
 ):
     """
-    Generate a clean TXT reference list with modifications
-    already incorporated.
-
-    Headings remain in English so the generated TXT can be
-    uploaded directly back into the app regardless of interface
-    language.
+    Generate a TXT reference list with modifications already incorporated.
     """
 
     lines = []
@@ -1212,25 +1137,14 @@ def make_tag_categories_dataframe(
         tags
         group
 
-    Every entity appears as one row.
+    Values containing two or more "=" signs in succession,
+    such as:
 
-    The group column uses category labels in the language selected
-    by the user:
+        ==
+        ===
+        ====
 
-        English:
-            People
-            Organizations
-            Places
-
-        Spanish:
-            Personas
-            Organizaciones
-            Lugares
-
-        Portuguese:
-            Pessoas
-            Organizações
-            Lugares
+    are excluded from this tag-categories TSV only.
 
     Duplicate entity/category pairs are removed while preserving
     category and entity order.
@@ -1241,7 +1155,6 @@ def make_tag_categories_dataframe(
     ]
 
     records = []
-
     seen = set()
 
     for category in [
@@ -1257,6 +1170,16 @@ def make_tag_categories_dataframe(
         for entity_value in updated_sections[
             category
         ]:
+
+            # ------------------------------------------------
+            # EXCLUDE VALUES WITH SUCCESSIVE EQUALS SIGNS
+            # ------------------------------------------------
+
+            if re.search(
+                r"={2,}",
+                str(entity_value)
+            ):
+                continue
 
             normalized_entity = normalize_value(
                 value=entity_value,
