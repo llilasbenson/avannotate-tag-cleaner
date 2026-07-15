@@ -30,7 +30,7 @@ TRANSLATIONS = {
             "Upload a TSV file containing people, organization, and place-name "
             "columns, together with a TXT reference file containing People, "
             "Organizations, Places, and Modifications lists. The app reorganizes "
-            "entities according to the TXT categories, removes unapproved values, "
+            "entities according to the TXT groups, removes unapproved values, "
             "applies requested modifications, generates a combined Tags column, "
             "and creates additional review and reference files."
         ),
@@ -75,12 +75,12 @@ TRANSLATIONS = {
         "accent_insensitive": "Ignore accents/diacritics",
         "strip_whitespace": "Ignore extra surrounding whitespace",
 
-        "tag_categories_settings": "Tag categories TSV settings",
+        "tag_categories_settings": "Tag groups TSV settings",
         "group_language": "Language for the group values",
 
         "group_language_help": (
-            "Choose whether the group column in the tag-categories TSV uses "
-            "English, Spanish, or Portuguese category names."
+            "Choose whether the group column in the tag-groups TSV uses "
+            "English, Spanish, or Portuguese group names."
         ),
 
         "process": "Clean and reorganize TSV",
@@ -89,7 +89,7 @@ TRANSLATIONS = {
         "preview_cleaned": "Cleaned TSV preview",
         "reference_summary": "TXT reference-list summary",
         "updated_txt_preview": "Updated TXT entity list preview",
-        "tag_categories_preview": "Tag categories TSV preview",
+        "tag_categories_preview": "Tag groups TSV preview",
         "annotation_review_preview": "Annotation review TSV preview",
 
         "people": "People",
@@ -123,7 +123,7 @@ TRANSLATIONS = {
 
         "download_tsv": "Download cleaned TSV",
         "download_txt": "Download updated TXT entity list",
-        "download_tag_categories": "Download tag categories TSV",
+        "download_tag_categories": "Download tag groups TSV",
         "download_annotation_review": "Download annotation review TSV",
 
         "download_txt_name": "updated_entities.txt",
@@ -185,7 +185,7 @@ University of Texas -> The University of Texas at Austin
             "Suba un archivo TSV con columnas de nombres de personas, organizaciones "
             "y lugares, junto con un archivo TXT de referencia que contenga listas de "
             "Personas, Organizaciones, Lugares y Modificaciones. La aplicación "
-            "reorganiza las entidades según las categorías del TXT, elimina valores "
+            "reorganiza las entidades según los grupos del TXT, elimina valores "
             "no autorizados, aplica las modificaciones solicitadas, genera una columna "
             "combinada Tags y crea archivos adicionales de revisión y referencia."
         ),
@@ -242,14 +242,14 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "tag_categories_settings": (
-            "Configuración del TSV de categorías de etiquetas"
+            "Configuración del TSV de grupos de etiquetas"
         ),
 
         "group_language": "Idioma de los valores de la columna group",
 
         "group_language_help": (
-            "Seleccione si la columna group del TSV de categorías utiliza "
-            "nombres de categorías en inglés, español o portugués."
+            "Seleccione si la columna group del TSV de grupos utiliza "
+            "nombres de grupos en inglés, español o portugués."
         ),
 
         "process": "Depurar y reorganizar TSV",
@@ -301,7 +301,7 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "download_tag_categories": (
-            "Descargar TSV de categorías de etiquetas"
+            "Descargar TSV de grupos de etiquetas"
         ),
 
         "download_annotation_review": (
@@ -369,7 +369,7 @@ University of Texas -> The University of Texas at Austin
             "Envie um arquivo TSV com colunas de nomes de pessoas, organizações "
             "e lugares, juntamente com um arquivo TXT de referência contendo listas "
             "de Pessoas, Organizações, Lugares e Modificações. O aplicativo reorganiza "
-            "as entidades segundo as categorias do TXT, remove valores não autorizados, "
+            "as entidades segundo as grupos do TXT, remove valores não autorizados, "
             "aplica as modificações solicitadas, gera uma coluna combinada Tags e cria "
             "arquivos adicionais de revisão e referência."
         ),
@@ -425,14 +425,14 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "tag_categories_settings": (
-            "Configurações do TSV de categorias de tags"
+            "Configurações do TSV de grupos de tags"
         ),
 
         "group_language": "Idioma dos valores da coluna group",
 
         "group_language_help": (
-            "Escolha se a coluna group do TSV de categorias usa nomes de "
-            "categorias em inglês, espanhol ou português."
+            "Escolha se a coluna group do TSV de grupos usa nomes de "
+            "grupos em inglês, espanhol ou português."
         ),
 
         "process": "Limpar e reorganizar TSV",
@@ -484,7 +484,7 @@ University of Texas -> The University of Texas at Austin
         ),
 
         "download_tag_categories": (
-            "Baixar TSV de categorias de tags"
+            "Baixar TSV de grupos de tags"
         ),
 
         "download_annotation_review": (
