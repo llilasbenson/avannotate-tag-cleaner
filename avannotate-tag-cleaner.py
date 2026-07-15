@@ -42,9 +42,7 @@ TRANSLATIONS = {
             "Places, and Modifications."
         ),
         "mapping": "Entity column mapping",
-        "mapping_help": (
-            "Select the TSV column corresponding to each TXT entity group."
-        ),
+        "mapping_help": "Select the TSV column corresponding to each TXT entity group.",
         "people_column": "TSV column for people",
         "organizations_column": "TSV column for organizations",
         "places_column": "TSV column for places",
@@ -113,6 +111,9 @@ TRANSLATIONS = {
             "The cleaned TSV and all additional downloadable files were generated "
             "successfully."
         ),
+        "downloads_ready": (
+            "All files are ready. You can download each one without losing the others."
+        ),
         "txt_format": "Expected TXT format",
         "unrecognized_content": "Content found before a recognized TXT heading",
         "unrecognized_help": (
@@ -137,7 +138,6 @@ Mexico -> México
 University of Texas -> The University of Texas at Austin
 """,
     },
-
     "Español": {
         "app_title": "Depurador de entidades en TSV",
         "app_description": (
@@ -162,9 +162,7 @@ University of Texas -> The University of Texas at Austin
         "people_column": "Columna TSV para personas",
         "organizations_column": "Columna TSV para organizaciones",
         "places_column": "Columna TSV para lugares",
-        "annotation_mapping": (
-            "Correspondencia de columnas para compilaciones de segmentos"
-        ),
+        "annotation_mapping": "Correspondencia de columnas para compilaciones de segmentos",
         "annotation_mapping_help": (
             "Seleccione las columnas TSV que se utilizarán para crear el archivo "
             "de compilaciones por segmento."
@@ -190,9 +188,7 @@ University of Texas -> The University of Texas at Austin
         "reference_summary": "Resumen de la lista de referencia TXT",
         "updated_txt_preview": "Vista previa de la lista TXT actualizada",
         "tag_groups_preview": "Vista previa del TSV de grupos de etiquetas",
-        "segment_compilations_preview": (
-            "Vista previa del TSV de compilaciones de segmentos"
-        ),
+        "segment_compilations_preview": "Vista previa del TSV de compilaciones de segmentos",
         "people": "Personas",
         "organizations": "Organizaciones",
         "places": "Lugares",
@@ -232,10 +228,11 @@ University of Texas -> The University of Texas at Austin
             "El TSV depurado y todos los archivos descargables adicionales "
             "se generaron correctamente."
         ),
-        "txt_format": "Formato TXT esperado",
-        "unrecognized_content": (
-            "Contenido encontrado antes de un encabezado TXT reconocido"
+        "downloads_ready": (
+            "Todos los archivos están listos. Puede descargar cada uno sin perder los demás."
         ),
+        "txt_format": "Formato TXT esperado",
+        "unrecognized_content": "Contenido encontrado antes de un encabezado TXT reconocido",
         "unrecognized_help": (
             "Estas líneas no se procesaron porque aparecieron antes de un encabezado "
             "reconocido de Personas, Organizaciones, Lugares o Modificaciones."
@@ -258,7 +255,6 @@ Mexico -> México
 University of Texas -> The University of Texas at Austin
 """,
     },
-
     "Português": {
         "app_title": "Limpador de entidades em TSV",
         "app_description": (
@@ -277,15 +273,11 @@ University of Texas -> The University of Texas at Austin
             "Lugares e Modificações."
         ),
         "mapping": "Mapeamento das colunas de entidades",
-        "mapping_help": (
-            "Selecione a coluna TSV correspondente a cada grupo de entidade do TXT."
-        ),
+        "mapping_help": "Selecione a coluna TSV correspondente a cada grupo de entidade do TXT.",
         "people_column": "Coluna TSV para pessoas",
         "organizations_column": "Coluna TSV para organizações",
         "places_column": "Coluna TSV para lugares",
-        "annotation_mapping": (
-            "Mapeamento das colunas para compilações de segmentos"
-        ),
+        "annotation_mapping": "Mapeamento das colunas para compilações de segmentos",
         "annotation_mapping_help": (
             "Selecione as colunas TSV usadas para criar o arquivo de compilações "
             "por segmento."
@@ -311,9 +303,7 @@ University of Texas -> The University of Texas at Austin
         "reference_summary": "Resumo da lista de referência TXT",
         "updated_txt_preview": "Visualização da lista TXT atualizada",
         "tag_groups_preview": "Visualização do TSV de grupos de tags",
-        "segment_compilations_preview": (
-            "Visualização do TSV de compilações de segmentos"
-        ),
+        "segment_compilations_preview": "Visualização do TSV de compilações de segmentos",
         "people": "Pessoas",
         "organizations": "Organizações",
         "places": "Lugares",
@@ -353,10 +343,11 @@ University of Texas -> The University of Texas at Austin
             "O TSV limpo e todos os arquivos adicionais para download foram "
             "gerados com sucesso."
         ),
-        "txt_format": "Formato TXT esperado",
-        "unrecognized_content": (
-            "Conteúdo encontrado antes de um cabeçalho TXT reconhecido"
+        "downloads_ready": (
+            "Todos os arquivos estão prontos. Você pode baixar cada um sem perder os demais."
         ),
+        "txt_format": "Formato TXT esperado",
+        "unrecognized_content": "Conteúdo encontrado antes de um cabeçalho TXT reconhecido",
         "unrecognized_help": (
             "Estas linhas não foram processadas porque apareceram antes de um "
             "cabeçalho reconhecido de Pessoas, Organizações, Lugares ou Modificações."
@@ -382,10 +373,6 @@ University of Texas -> The University of Texas at Austin
 }
 
 
-# ============================================================
-# TAG GROUP LABELS
-# ============================================================
-
 GROUP_LABELS = {
     "English": {
         "people": "People",
@@ -405,70 +392,64 @@ GROUP_LABELS = {
 }
 
 
-# ============================================================
-# TXT SECTION HEADING ALIASES
-# ============================================================
-
 SECTION_ALIASES = {
     "people": {
-        "people",
-        "person",
-        "persons",
-        "people names",
-        "person names",
-        "personas",
-        "persona",
-        "nombres de personas",
-        "pessoas",
-        "pessoa",
-        "nomes de pessoas",
+        "people", "person", "persons", "people names", "person names",
+        "personas", "persona", "nombres de personas",
+        "pessoas", "pessoa", "nomes de pessoas",
     },
     "organizations": {
-        "organizations",
-        "organization",
-        "organisations",
-        "organisation",
-        "organization names",
-        "organisation names",
-        "organizaciones",
-        "organización",
-        "nombres de organizaciones",
-        "organizacoes",
-        "organizações",
-        "organização",
-        "nomes de organizações",
+        "organizations", "organization", "organisations", "organisation",
+        "organization names", "organisation names",
+        "organizaciones", "organización", "nombres de organizaciones",
+        "organizacoes", "organizações", "organização", "nomes de organizações",
     },
     "places": {
-        "places",
-        "place",
-        "locations",
-        "location",
-        "place names",
-        "location names",
-        "lugares",
-        "lugar",
-        "nombres de lugares",
-        "locais",
-        "nomes de lugares",
+        "places", "place", "locations", "location", "place names",
+        "location names", "lugares", "lugar", "nombres de lugares",
+        "locais", "nomes de lugares",
     },
     "modifications": {
-        "modifications",
-        "modification",
-        "changes",
-        "corrections",
-        "modificaciones",
-        "modificación",
-        "cambios",
-        "correcciones",
-        "modificacoes",
-        "modificações",
-        "modificação",
-        "alteracoes",
-        "alterações",
-        "correcoes",
-        "correções",
+        "modifications", "modification", "changes", "corrections",
+        "modificaciones", "modificación", "cambios", "correcciones",
+        "modificacoes", "modificações", "modificação",
+        "alteracoes", "alterações", "correcoes", "correções",
     },
 }
+
+
+# ============================================================
+# SESSION STATE
+# ============================================================
+
+OUTPUT_KEYS = [
+    "cleaned_df",
+    "stats",
+    "removed_records",
+    "moved_records",
+    "modified_records",
+    "updated_txt_content",
+    "tag_groups_df",
+    "segment_compilations_df",
+    "cleaned_tsv_filename",
+    "tag_groups_filename",
+    "segment_compilations_filename",
+    "source_signature",
+]
+
+
+def initialize_session_state():
+    for key in OUTPUT_KEYS:
+        if key not in st.session_state:
+            st.session_state[key] = None
+
+
+def clear_generated_outputs():
+    for key in OUTPUT_KEYS:
+        st.session_state[key] = None
+
+
+initialize_session_state()
 
 
 # ============================================================
@@ -478,12 +459,7 @@ SECTION_ALIASES = {
 def decode_uploaded_file(uploaded_file):
     raw_bytes = uploaded_file.getvalue()
 
-    for encoding in [
-        "utf-8-sig",
-        "utf-8",
-        "cp1252",
-        "latin-1",
-    ]:
+    for encoding in ["utf-8-sig", "utf-8", "cp1252", "latin-1"]:
         try:
             return raw_bytes.decode(encoding)
         except UnicodeDecodeError:
@@ -504,16 +480,11 @@ def read_tsv(uploaded_file):
     )
 
 
-# ============================================================
-# FILENAME HELPERS
-# ============================================================
-
 def get_root_filename(filename):
     if not filename:
         return "cleaned"
 
     root_name, _ = os.path.splitext(filename)
-
     return root_name or "cleaned"
 
 
@@ -570,12 +541,7 @@ def identify_section_heading(line):
     normalized_line = normalize_heading(line)
 
     for section_name, aliases in SECTION_ALIASES.items():
-        normalized_aliases = {
-            normalize_heading(alias)
-            for alias in aliases
-        }
-
-        if normalized_line in normalized_aliases:
+        if normalized_line in {normalize_heading(alias) for alias in aliases}:
             return section_name
 
     return None
@@ -613,29 +579,18 @@ def parse_reference_txt(text):
                 continue
 
             old_value, new_value = line.split("->", 1)
-
             old_value = old_value.strip()
             new_value = new_value.strip()
 
             if old_value and new_value:
-                sections["modifications"].append(
-                    (old_value, new_value)
-                )
+                sections["modifications"].append((old_value, new_value))
         else:
             sections[current_section].append(line)
 
-    for section_name in [
-        "people",
-        "organizations",
-        "places",
-    ]:
-        sections[section_name] = list(
-            dict.fromkeys(sections[section_name])
-        )
+    for section_name in ["people", "organizations", "places"]:
+        sections[section_name] = list(dict.fromkeys(sections[section_name]))
 
-    sections["modifications"] = list(
-        dict.fromkeys(sections["modifications"])
-    )
+    sections["modifications"] = list(dict.fromkeys(sections["modifications"]))
 
     return sections, unrecognized_content
 
@@ -660,17 +615,13 @@ def split_cell_values(cell, separator):
     ]
 
 
-def deduplicate_values(
-    values,
-    ignore_case=True,
-    ignore_accents=False,
-):
+def deduplicate_values(values, ignore_case=True, ignore_accents=False):
     unique_values = []
     seen = set()
 
     for value in values:
         comparison_key = normalize_value(
-            value=value,
+            value,
             ignore_case=ignore_case,
             ignore_accents=ignore_accents,
             strip_whitespace=True,
@@ -683,14 +634,9 @@ def deduplicate_values(
     return unique_values
 
 
-def join_cell_values(
-    values,
-    separator,
-    ignore_case=True,
-    ignore_accents=False,
-):
+def join_cell_values(values, separator, ignore_case=True, ignore_accents=False):
     unique_values = deduplicate_values(
-        values=values,
+        values,
         ignore_case=ignore_case,
         ignore_accents=ignore_accents,
     )
@@ -712,14 +658,10 @@ def build_reference_lookups(
     preferred_spelling_lookup = {}
     modification_lookup = {}
 
-    for group_name in [
-        "people",
-        "organizations",
-        "places",
-    ]:
+    for group_name in ["people", "organizations", "places"]:
         for value in reference_sections[group_name]:
             normalized = normalize_value(
-                value=value,
+                value,
                 ignore_case=ignore_case,
                 ignore_accents=ignore_accents,
                 strip_whitespace=strip_whitespace,
@@ -730,7 +672,7 @@ def build_reference_lookups(
 
     for old_value, new_value in reference_sections["modifications"]:
         normalized_old = normalize_value(
-            value=old_value,
+            old_value,
             ignore_case=ignore_case,
             ignore_accents=ignore_accents,
             strip_whitespace=strip_whitespace,
@@ -738,11 +680,7 @@ def build_reference_lookups(
 
         modification_lookup[normalized_old] = new_value
 
-    return (
-        category_lookup,
-        preferred_spelling_lookup,
-        modification_lookup,
-    )
+    return category_lookup, preferred_spelling_lookup, modification_lookup
 
 
 # ============================================================
@@ -765,10 +703,10 @@ def clean_and_reorganize_dataframe(
         preferred_spelling_lookup,
         modification_lookup,
     ) = build_reference_lookups(
-        reference_sections=reference_sections,
-        ignore_case=ignore_case,
-        ignore_accents=ignore_accents,
-        strip_whitespace=strip_whitespace,
+        reference_sections,
+        ignore_case,
+        ignore_accents,
+        strip_whitespace,
     )
 
     stats = {
@@ -782,12 +720,7 @@ def clean_and_reorganize_dataframe(
     removed_records = []
     moved_records = []
     modified_records = []
-
-    entity_groups = [
-        "people",
-        "organizations",
-        "places",
-    ]
+    entity_groups = ["people", "organizations", "places"]
 
     for row_index in cleaned_df.index:
         row_output = {
@@ -814,13 +747,10 @@ def clean_and_reorganize_dataframe(
                     strip_whitespace=strip_whitespace,
                 )
 
-                destination_group = category_lookup.get(
-                    normalized_original
-                )
+                destination_group = category_lookup.get(normalized_original)
 
                 if destination_group is None:
                     stats["removed"] += 1
-
                     removed_records.append(
                         {
                             "row": row_index + 1,
@@ -828,7 +758,6 @@ def clean_and_reorganize_dataframe(
                             "value": original_value,
                         }
                     )
-
                     continue
 
                 grouped_value = preferred_spelling_lookup.get(
@@ -840,15 +769,12 @@ def clean_and_reorganize_dataframe(
                     stats["kept"] += 1
                 else:
                     stats["moved"] += 1
-
                     moved_records.append(
                         {
                             "row": row_index + 1,
                             "value": grouped_value,
                             "source_column": source_column,
-                            "destination_column": category_columns[
-                                destination_group
-                            ],
+                            "destination_column": category_columns[destination_group],
                         }
                     )
 
@@ -866,7 +792,6 @@ def clean_and_reorganize_dataframe(
 
                 if final_value != grouped_value:
                     stats["modified"] += 1
-
                     modified_records.append(
                         {
                             "row": row_index + 1,
@@ -894,7 +819,6 @@ def clean_and_reorganize_dataframe(
 
         for group_name in entity_groups:
             column_name = category_columns[group_name]
-
             combined_values.extend(
                 split_cell_values(
                     cleaned_df.at[row_index, column_name],
@@ -913,14 +837,10 @@ def clean_and_reorganize_dataframe(
     cleaned_df["Tags"] = tags_values
 
     columns_without_tags = [
-        column
-        for column in cleaned_df.columns
-        if column != "Tags"
+        column for column in cleaned_df.columns if column != "Tags"
     ]
 
-    cleaned_df = cleaned_df[
-        columns_without_tags + ["Tags"]
-    ]
+    cleaned_df = cleaned_df[columns_without_tags + ["Tags"]]
 
     return (
         cleaned_df,
@@ -959,11 +879,7 @@ def apply_modifications_to_reference_sections(
         "places": [],
     }
 
-    for group_name in [
-        "people",
-        "organizations",
-        "places",
-    ]:
+    for group_name in ["people", "organizations", "places"]:
         updated_values = []
 
         for value in reference_sections[group_name]:
@@ -975,10 +891,7 @@ def apply_modifications_to_reference_sections(
             )
 
             updated_values.append(
-                modification_lookup.get(
-                    normalized_value,
-                    value,
-                )
+                modification_lookup.get(normalized_value, value)
             )
 
         updated_sections[group_name] = deduplicate_values(
@@ -1016,15 +929,10 @@ def make_tag_groups_dataframe(
     ignore_accents,
 ):
     group_labels = GROUP_LABELS[group_language]
-
     records = []
     seen = set()
 
-    for group_name in [
-        "people",
-        "organizations",
-        "places",
-    ]:
+    for group_name in ["people", "organizations", "places"]:
         group_value = group_labels[group_name]
 
         for entity_value in updated_sections[group_name]:
@@ -1038,16 +946,12 @@ def make_tag_groups_dataframe(
                 strip_whitespace=True,
             )
 
-            duplicate_key = (
-                normalized_entity,
-                group_value,
-            )
+            duplicate_key = (normalized_entity, group_value)
 
             if duplicate_key in seen:
                 continue
 
             seen.add(duplicate_key)
-
             records.append(
                 {
                     "tags": entity_value,
@@ -1055,13 +959,7 @@ def make_tag_groups_dataframe(
                 }
             )
 
-    return pd.DataFrame(
-        records,
-        columns=[
-            "tags",
-            "group",
-        ],
-    )
+    return pd.DataFrame(records, columns=["tags", "group"])
 
 
 # ============================================================
@@ -1089,10 +987,7 @@ def timestamp_to_seconds(timestamp):
             )
 
         if len(parts) == 2:
-            return (
-                float(parts[0]) * 60
-                + float(parts[1])
-            )
+            return float(parts[0]) * 60 + float(parts[1])
 
     except ValueError:
         return None
@@ -1112,27 +1007,14 @@ def get_earliest_timestamp(values):
         seconds = timestamp_to_seconds(value_text)
 
         if seconds is not None:
-            candidates.append(
-                (
-                    seconds,
-                    position,
-                    value_text,
-                )
-            )
+            candidates.append((seconds, position, value_text))
 
     if candidates:
-        candidates.sort(
-            key=lambda item: (
-                item[0],
-                item[1],
-            )
-        )
-
+        candidates.sort(key=lambda item: (item[0], item[1]))
         return candidates[0][2]
 
     for value in values:
         value_text = str(value).strip()
-
         if value_text:
             return value_text
 
@@ -1151,28 +1033,17 @@ def get_latest_timestamp(values):
         seconds = timestamp_to_seconds(value_text)
 
         if seconds is not None:
-            candidates.append(
-                (
-                    seconds,
-                    position,
-                    value_text,
-                )
-            )
+            candidates.append((seconds, position, value_text))
 
     if candidates:
         candidates.sort(
-            key=lambda item: (
-                item[0],
-                item[1],
-            ),
+            key=lambda item: (item[0], item[1]),
             reverse=True,
         )
-
         return candidates[0][2]
 
     for value in reversed(list(values)):
         value_text = str(value).strip()
-
         if value_text:
             return value_text
 
@@ -1192,11 +1063,7 @@ def make_segment_compilations_dataframe(
     tags_column="Tags",
 ):
     working_df = cleaned_df.copy()
-
-    working_df["_original_row_order"] = range(
-        len(working_df)
-    )
-
+    working_df["_original_row_order"] = range(len(working_df))
     records = []
 
     grouped = working_df.groupby(
@@ -1206,10 +1073,7 @@ def make_segment_compilations_dataframe(
     )
 
     for session_title, group in grouped:
-        group = group.sort_values(
-            "_original_row_order"
-        )
-
+        group = group.sort_values("_original_row_order")
         session_title_text = str(session_title).strip()
 
         earliest_timestamp = get_earliest_timestamp(
@@ -1221,9 +1085,7 @@ def make_segment_compilations_dataframe(
         )
 
         if earliest_timestamp and latest_timestamp:
-            timestamp_range = (
-                f"{earliest_timestamp} - {latest_timestamp}"
-            )
+            timestamp_range = f"{earliest_timestamp} - {latest_timestamp}"
         elif earliest_timestamp:
             timestamp_range = earliest_timestamp
         else:
@@ -1259,12 +1121,8 @@ def make_segment_compilations_dataframe(
             {
                 "Timestamps": timestamp_range,
                 "Session Title": session_title_text,
-                "Transcription": " ".join(
-                    transcription_parts
-                ),
-                "Tags": " | ".join(
-                    combined_tags
-                ),
+                "Transcription": " ".join(transcription_parts),
+                "Tags": " | ".join(combined_tags),
             }
         )
 
@@ -1295,15 +1153,7 @@ def make_txt_download(text):
     return text.encode("utf-8-sig")
 
 
-# ============================================================
-# COLUMN DEFAULT DETECTION
-# ============================================================
-
-def find_default_column_index(
-    columns,
-    keywords,
-    fallback_index,
-):
+def find_default_column_index(columns, keywords, fallback_index):
     for index, column in enumerate(columns):
         normalized_column = normalize_heading(column)
 
@@ -1314,10 +1164,7 @@ def find_default_column_index(
     if not columns:
         return 0
 
-    return min(
-        fallback_index,
-        len(columns) - 1,
-    )
+    return min(fallback_index, len(columns) - 1)
 
 
 # ============================================================
@@ -1326,11 +1173,7 @@ def find_default_column_index(
 
 language = st.selectbox(
     "Language / Idioma",
-    options=[
-        "English",
-        "Español",
-        "Português",
-    ],
+    options=["English", "Español", "Português"],
 )
 
 t = TRANSLATIONS[language]
@@ -1343,7 +1186,6 @@ t = TRANSLATIONS[language]
 st.title(f"🧹 {t['app_title']}")
 st.write(t["app_description"])
 st.divider()
-
 
 upload_col1, upload_col2 = st.columns(2)
 
@@ -1361,7 +1203,6 @@ with upload_col2:
         help=t["txt_help"],
     )
 
-
 with st.expander(t["txt_format"]):
     st.code(
         t["txt_format_example"],
@@ -1370,6 +1211,19 @@ with st.expander(t["txt_format"]):
 
 
 if tsv_file is not None and txt_file is not None:
+    current_source_signature = (
+        tsv_file.name,
+        len(tsv_file.getvalue()),
+        txt_file.name,
+        len(txt_file.getvalue()),
+    )
+
+    if (
+        st.session_state.source_signature is not None
+        and st.session_state.source_signature != current_source_signature
+    ):
+        clear_generated_outputs()
+
     try:
         df = read_tsv(tsv_file)
     except Exception as error:
@@ -1378,30 +1232,22 @@ if tsv_file is not None and txt_file is not None:
 
     try:
         txt_content = decode_uploaded_file(txt_file)
-
-        (
-            reference_sections,
-            unrecognized_content,
-        ) = parse_reference_txt(txt_content)
-
+        reference_sections, unrecognized_content = parse_reference_txt(
+            txt_content
+        )
     except Exception as error:
         st.error(f"{t['txt_error']} {error}")
         st.stop()
 
-
     st.subheader(t["preview_original"])
-
     st.dataframe(
         df.head(100),
         use_container_width=True,
     )
 
-
     st.subheader(t["reference_summary"])
 
-    summary_col1, summary_col2, summary_col3, summary_col4 = (
-        st.columns(4)
-    )
+    summary_col1, summary_col2, summary_col3, summary_col4 = st.columns(4)
 
     summary_col1.metric(
         t["people"],
@@ -1423,16 +1269,13 @@ if tsv_file is not None and txt_file is not None:
         len(reference_sections["modifications"]),
     )
 
-
     if unrecognized_content:
         with st.expander(t["unrecognized_content"]):
             st.caption(t["unrecognized_help"])
-
             st.code(
                 "\n".join(unrecognized_content),
                 language="text",
             )
-
 
     st.divider()
     st.subheader(t["mapping"])
@@ -1442,12 +1285,7 @@ if tsv_file is not None and txt_file is not None:
 
     people_default_index = find_default_column_index(
         column_names,
-        [
-            "people",
-            "person",
-            "persona",
-            "pessoa",
-        ],
+        ["people", "person", "persona", "pessoa"],
         0,
     )
 
@@ -1464,12 +1302,7 @@ if tsv_file is not None and txt_file is not None:
 
     places_default_index = find_default_column_index(
         column_names,
-        [
-            "place",
-            "location",
-            "lugar",
-            "local",
-        ],
+        ["place", "location", "lugar", "local"],
         2,
     )
 
@@ -1496,18 +1329,12 @@ if tsv_file is not None and txt_file is not None:
             index=places_default_index,
         )
 
-
     st.subheader(t["annotation_mapping"])
     st.caption(t["annotation_mapping_help"])
 
     session_title_default_index = find_default_column_index(
         column_names,
-        [
-            "session title",
-            "session",
-            "sesion",
-            "sessao",
-        ],
+        ["session title", "session", "sesion", "sessao"],
         0,
     )
 
@@ -1538,13 +1365,7 @@ if tsv_file is not None and txt_file is not None:
 
     end_timestamp_default_index = find_default_column_index(
         column_names,
-        [
-            "end timestamp",
-            "end time",
-            "end",
-            "cierre",
-            "fim",
-        ],
+        ["end timestamp", "end time", "end", "cierre", "fim"],
         0,
     )
 
@@ -1583,7 +1404,6 @@ if tsv_file is not None and txt_file is not None:
             index=end_timestamp_default_index,
         )
 
-
     st.subheader(t["comparison_settings"])
 
     settings_col1, settings_col2 = st.columns(2)
@@ -1601,9 +1421,7 @@ if tsv_file is not None and txt_file is not None:
             index=0,
         )
 
-        separator = separator_options[
-            selected_separator_label
-        ]
+        separator = separator_options[selected_separator_label]
 
     with settings_col2:
         ignore_case = st.checkbox(
@@ -1621,20 +1439,14 @@ if tsv_file is not None and txt_file is not None:
             value=True,
         )
 
-
     st.subheader(t["tag_groups_settings"])
 
     group_language = st.selectbox(
         t["group_language"],
-        options=[
-            "English",
-            "Español",
-            "Português",
-        ],
+        options=["English", "Español", "Português"],
         index=0,
         help=t["group_language_help"],
     )
-
 
     if st.button(
         t["process"],
@@ -1693,35 +1505,51 @@ if tsv_file is not None and txt_file is not None:
             ignore_accents=ignore_accents,
         )
 
-        segment_compilations_df = (
-            make_segment_compilations_dataframe(
-                cleaned_df=cleaned_df,
-                session_title_column=session_title_column,
-                transcription_column=transcription_column,
-                start_timestamp_column=start_timestamp_column,
-                end_timestamp_column=end_timestamp_column,
-                tags_column="Tags",
-            )
+        segment_compilations_df = make_segment_compilations_dataframe(
+            cleaned_df=cleaned_df,
+            session_title_column=session_title_column,
+            transcription_column=transcription_column,
+            start_timestamp_column=start_timestamp_column,
+            end_timestamp_column=end_timestamp_column,
+            tags_column="Tags",
         )
 
-        root_filename = get_root_filename(
-            tsv_file.name
-        )
+        root_filename = get_root_filename(tsv_file.name)
 
-        cleaned_tsv_filename = (
+        st.session_state.cleaned_df = cleaned_df
+        st.session_state.stats = stats
+        st.session_state.removed_records = removed_records
+        st.session_state.moved_records = moved_records
+        st.session_state.modified_records = modified_records
+        st.session_state.updated_txt_content = updated_txt_content
+        st.session_state.tag_groups_df = tag_groups_df
+        st.session_state.segment_compilations_df = segment_compilations_df
+        st.session_state.cleaned_tsv_filename = (
             f"{root_filename}_cleaned.tsv"
         )
-
-        tag_groups_filename = (
+        st.session_state.tag_groups_filename = (
             f"{root_filename}_tag_groups.tsv"
         )
-
-        segment_compilations_filename = (
+        st.session_state.segment_compilations_filename = (
             f"{root_filename}_segment_compilations.tsv"
         )
+        st.session_state.source_signature = current_source_signature
 
         st.success(t["success"])
 
+    # ========================================================
+    # PERSISTENT RESULTS AND DOWNLOADS
+    # ========================================================
+
+    if st.session_state.cleaned_df is not None:
+        cleaned_df = st.session_state.cleaned_df
+        stats = st.session_state.stats
+        removed_records = st.session_state.removed_records
+        moved_records = st.session_state.moved_records
+        modified_records = st.session_state.modified_records
+        updated_txt_content = st.session_state.updated_txt_content
+        tag_groups_df = st.session_state.tag_groups_df
+        segment_compilations_df = st.session_state.segment_compilations_df
 
         st.subheader(t["results"])
 
@@ -1759,14 +1587,12 @@ if tsv_file is not None and txt_file is not None:
             f"{stats['modified']:,}",
         )
 
-
         st.subheader(t["preview_cleaned"])
 
         st.dataframe(
             cleaned_df.head(100),
             use_container_width=True,
         )
-
 
         with st.expander(
             f"{t['moved_values']} ({stats['moved']:,})"
@@ -1812,7 +1638,6 @@ if tsv_file is not None and txt_file is not None:
             else:
                 st.info(t["no_moved"])
 
-
         with st.expander(
             f"{t['removed_values']} ({stats['removed']:,})"
         ):
@@ -1822,19 +1647,13 @@ if tsv_file is not None and txt_file is not None:
                 removed_summary = (
                     removed_df
                     .groupby(
-                        [
-                            "source_column",
-                            "value",
-                        ],
+                        ["source_column", "value"],
                         dropna=False,
                     )
                     .size()
                     .reset_index(name="count")
                     .sort_values(
-                        [
-                            "source_column",
-                            "value",
-                        ]
+                        ["source_column", "value"]
                     )
                     .rename(
                         columns={
@@ -1852,7 +1671,6 @@ if tsv_file is not None and txt_file is not None:
                 )
             else:
                 st.info(t["no_removed"])
-
 
         with st.expander(
             f"{t['modified_values']} ({stats['modified']:,})"
@@ -1894,13 +1712,11 @@ if tsv_file is not None and txt_file is not None:
             else:
                 st.info(t["no_modified"])
 
-
         with st.expander(t["updated_txt_preview"]):
             st.code(
                 updated_txt_content,
                 language="text",
             )
-
 
         with st.expander(t["tag_groups_preview"]):
             st.dataframe(
@@ -1909,33 +1725,21 @@ if tsv_file is not None and txt_file is not None:
                 hide_index=True,
             )
 
-
-        with st.expander(
-            t["segment_compilations_preview"]
-        ):
+        with st.expander(t["segment_compilations_preview"]):
             st.dataframe(
                 segment_compilations_df,
                 use_container_width=True,
                 hide_index=True,
             )
 
+        st.info(t["downloads_ready"])
 
-        cleaned_tsv_bytes = make_tsv_download(
-            cleaned_df
-        )
-
-        updated_txt_bytes = make_txt_download(
-            updated_txt_content
-        )
-
-        tag_groups_tsv_bytes = make_tsv_download(
-            tag_groups_df
-        )
-
+        cleaned_tsv_bytes = make_tsv_download(cleaned_df)
+        updated_txt_bytes = make_txt_download(updated_txt_content)
+        tag_groups_tsv_bytes = make_tsv_download(tag_groups_df)
         segment_compilations_tsv_bytes = make_tsv_download(
             segment_compilations_df
         )
-
 
         download_col1, download_col2 = st.columns(2)
 
@@ -1943,10 +1747,12 @@ if tsv_file is not None and txt_file is not None:
             st.download_button(
                 label=t["download_tsv"],
                 data=cleaned_tsv_bytes,
-                file_name=cleaned_tsv_filename,
+                file_name=st.session_state.cleaned_tsv_filename,
                 mime="text/tab-separated-values",
                 type="primary",
                 use_container_width=True,
+                on_click="ignore",
+                key="download_cleaned_tsv",
             )
 
         with download_col2:
@@ -1957,8 +1763,9 @@ if tsv_file is not None and txt_file is not None:
                 mime="text/plain",
                 type="primary",
                 use_container_width=True,
+                on_click="ignore",
+                key="download_updated_txt",
             )
-
 
         download_col3, download_col4 = st.columns(2)
 
@@ -1966,21 +1773,26 @@ if tsv_file is not None and txt_file is not None:
             st.download_button(
                 label=t["download_tag_groups"],
                 data=tag_groups_tsv_bytes,
-                file_name=tag_groups_filename,
+                file_name=st.session_state.tag_groups_filename,
                 mime="text/tab-separated-values",
                 type="primary",
                 use_container_width=True,
+                on_click="ignore",
+                key="download_tag_groups_tsv",
             )
 
         with download_col4:
             st.download_button(
                 label=t["download_segment_compilations"],
                 data=segment_compilations_tsv_bytes,
-                file_name=segment_compilations_filename,
+                file_name=st.session_state.segment_compilations_filename,
                 mime="text/tab-separated-values",
                 type="primary",
                 use_container_width=True,
+                on_click="ignore",
+                key="download_segment_compilations_tsv",
             )
 
 else:
+    clear_generated_outputs()
     st.info(t["missing_files"])
