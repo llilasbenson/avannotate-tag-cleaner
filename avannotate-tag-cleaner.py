@@ -392,6 +392,30 @@ GROUP_LABELS = {
 }
 
 
+# Filename suffixes are selected according to the language chosen
+# under the Tag groups TSV settings section.
+FILENAME_SUFFIXES = {
+    "English": {
+        "cleaned_tsv": "annotations",
+        "updated_txt": "updated_entity_list",
+        "tag_groups_tsv": "tag_groups",
+        "segment_compilations_tsv": "segments",
+    },
+    "Español": {
+        "cleaned_tsv": "anotaciones",
+        "updated_txt": "lista_entidades_actualizada",
+        "tag_groups_tsv": "grupos_etiquetas",
+        "segment_compilations_tsv": "segmentos",
+    },
+    "Português": {
+        "cleaned_tsv": "anotacoes",
+        "updated_txt": "lista_entidades_atualizada",
+        "tag_groups_tsv": "grupos_tags",
+        "segment_compilations_tsv": "segmentos",
+    },
+}
+
+
 SECTION_ALIASES = {
     "people": {
         "people", "person", "persons", "people names", "person names",
@@ -432,6 +456,7 @@ OUTPUT_KEYS = [
     "tag_groups_df",
     "segment_compilations_df",
     "cleaned_tsv_filename",
+    "updated_txt_filename",
     "tag_groups_filename",
     "segment_compilations_filename",
     "source_signature",
@@ -1515,6 +1540,7 @@ if tsv_file is not None and txt_file is not None:
         )
 
         root_filename = get_root_filename(tsv_file.name)
+        selected_suffixes = FILENAME_SUFFIXES[group_language]
 
         st.session_state.cleaned_df = cleaned_df
         st.session_state.stats = stats
@@ -1524,14 +1550,18 @@ if tsv_file is not None and txt_file is not None:
         st.session_state.updated_txt_content = updated_txt_content
         st.session_state.tag_groups_df = tag_groups_df
         st.session_state.segment_compilations_df = segment_compilations_df
+
         st.session_state.cleaned_tsv_filename = (
-            f"{root_filename}_cleaned.tsv"
+            f"{root_filename}_{selected_suffixes['cleaned_tsv']}.tsv"
+        )
+        st.session_state.updated_txt_filename = (
+            f"{root_filename}_{selected_suffixes['updated_txt']}.txt"
         )
         st.session_state.tag_groups_filename = (
-            f"{root_filename}_tag_groups.tsv"
+            f"{root_filename}_{selected_suffixes['tag_groups_tsv']}.tsv"
         )
         st.session_state.segment_compilations_filename = (
-            f"{root_filename}_segment_compilations.tsv"
+            f"{root_filename}_{selected_suffixes['segment_compilations_tsv']}.tsv"
         )
         st.session_state.source_signature = current_source_signature
 
@@ -1759,7 +1789,7 @@ if tsv_file is not None and txt_file is not None:
             st.download_button(
                 label=t["download_txt"],
                 data=updated_txt_bytes,
-                file_name=t["download_txt_name"],
+                file_name=st.session_state.updated_txt_filename,
                 mime="text/plain",
                 type="primary",
                 use_container_width=True,
