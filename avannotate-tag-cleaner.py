@@ -30,8 +30,8 @@ TRANSLATIONS = {
             "columns, together with a TXT reference file containing People, "
             "Organizations, Places, and Modifications lists. The app first "
             "reorganizes TSV values according to the TXT categories, then removes "
-            "values that do not appear in the TXT category lists, and finally "
-            "applies the requested modifications."
+            "values that do not appear in the TXT category lists, applies the "
+            "requested modifications, and adds a combined Tags column."
         ),
         "upload_tsv": "Upload TSV file",
         "upload_txt": "Upload TXT reference list",
@@ -56,6 +56,7 @@ TRANSLATIONS = {
         "preview_original": "Original TSV preview",
         "preview_cleaned": "Cleaned TSV preview",
         "reference_summary": "TXT reference-list summary",
+        "updated_txt_preview": "Updated TXT entity list preview",
         "people": "People",
         "organizations": "Organizations",
         "places": "Places",
@@ -79,8 +80,10 @@ TRANSLATIONS = {
         "no_removed": "No values were removed.",
         "no_moved": "No values were moved.",
         "no_modified": "No values were modified.",
-        "download": "Download cleaned TSV",
-        "download_name": "cleaned.tsv",
+        "download_tsv": "Download cleaned TSV",
+        "download_txt": "Download updated TXT entity list",
+        "download_tsv_name": "cleaned.tsv",
+        "download_txt_name": "updated_entities.txt",
         "missing_files": "Upload both a TSV file and a TXT file to continue.",
         "same_columns_error": (
             "The People, Organizations, and Places mappings must use "
@@ -88,7 +91,7 @@ TRANSLATIONS = {
         ),
         "tsv_error": "The TSV file could not be read.",
         "txt_error": "The TXT file could not be read.",
-        "success": "The TSV file was processed successfully.",
+        "success": "The TSV file and updated TXT entity list were generated successfully.",
         "txt_format": "Expected TXT format",
         "unrecognized_content": "Content found before a recognized TXT heading",
         "unrecognized_help": (
@@ -121,8 +124,8 @@ University of Texas -> The University of Texas at Austin
             "y lugares, junto con un archivo TXT de referencia que contenga listas de "
             "Personas, Organizaciones, Lugares y Modificaciones. La aplicación primero "
             "reorganiza los valores del TSV según las categorías del TXT, después "
-            "elimina los valores que no aparecen en las listas de categorías del TXT "
-            "y finalmente aplica las modificaciones solicitadas."
+            "elimina los valores que no aparecen en las listas del TXT, aplica las "
+            "modificaciones solicitadas y añade una columna combinada llamada Tags."
         ),
         "upload_tsv": "Subir archivo TSV",
         "upload_txt": "Subir lista de referencia TXT",
@@ -147,6 +150,7 @@ University of Texas -> The University of Texas at Austin
         "preview_original": "Vista previa del TSV original",
         "preview_cleaned": "Vista previa del TSV depurado",
         "reference_summary": "Resumen de la lista de referencia TXT",
+        "updated_txt_preview": "Vista previa de la lista TXT actualizada",
         "people": "Personas",
         "organizations": "Organizaciones",
         "places": "Lugares",
@@ -170,8 +174,10 @@ University of Texas -> The University of Texas at Austin
         "no_removed": "No se eliminó ningún valor.",
         "no_moved": "No se movió ningún valor.",
         "no_modified": "No se modificó ningún valor.",
-        "download": "Descargar TSV depurado",
-        "download_name": "tsv_depurado.tsv",
+        "download_tsv": "Descargar TSV depurado",
+        "download_txt": "Descargar lista TXT de entidades actualizada",
+        "download_tsv_name": "tsv_depurado.tsv",
+        "download_txt_name": "entidades_actualizadas.txt",
         "missing_files": "Suba un archivo TSV y un archivo TXT para continuar.",
         "same_columns_error": (
             "Las correspondencias de Personas, Organizaciones y Lugares deben "
@@ -179,7 +185,7 @@ University of Texas -> The University of Texas at Austin
         ),
         "tsv_error": "No se pudo leer el archivo TSV.",
         "txt_error": "No se pudo leer el archivo TXT.",
-        "success": "El archivo TSV se procesó correctamente.",
+        "success": "El TSV y la lista TXT de entidades actualizada se generaron correctamente.",
         "txt_format": "Formato TXT esperado",
         "unrecognized_content": "Contenido encontrado antes de un encabezado TXT reconocido",
         "unrecognized_help": (
@@ -212,8 +218,8 @@ University of Texas -> The University of Texas at Austin
             "e lugares, juntamente com um arquivo TXT de referência contendo listas "
             "de Pessoas, Organizações, Lugares e Modificações. O aplicativo primeiro "
             "reorganiza os valores do TSV de acordo com as categorias do TXT, depois "
-            "remove os valores que não aparecem nas listas de categorias do TXT e, "
-            "por fim, aplica as modificações solicitadas."
+            "remove os valores ausentes das listas do TXT, aplica as modificações "
+            "solicitadas e adiciona uma coluna combinada chamada Tags."
         ),
         "upload_tsv": "Enviar arquivo TSV",
         "upload_txt": "Enviar lista de referência TXT",
@@ -238,6 +244,7 @@ University of Texas -> The University of Texas at Austin
         "preview_original": "Visualização do TSV original",
         "preview_cleaned": "Visualização do TSV limpo",
         "reference_summary": "Resumo da lista de referência TXT",
+        "updated_txt_preview": "Visualização da lista TXT atualizada",
         "people": "Pessoas",
         "organizations": "Organizações",
         "places": "Lugares",
@@ -261,8 +268,10 @@ University of Texas -> The University of Texas at Austin
         "no_removed": "Nenhum valor foi removido.",
         "no_moved": "Nenhum valor foi movido.",
         "no_modified": "Nenhum valor foi modificado.",
-        "download": "Baixar TSV limpo",
-        "download_name": "tsv_limpo.tsv",
+        "download_tsv": "Baixar TSV limpo",
+        "download_txt": "Baixar lista TXT de entidades atualizada",
+        "download_tsv_name": "tsv_limpo.tsv",
+        "download_txt_name": "entidades_atualizadas.txt",
         "missing_files": "Envie um arquivo TSV e um arquivo TXT para continuar.",
         "same_columns_error": (
             "Os mapeamentos de Pessoas, Organizações e Lugares devem usar "
@@ -270,7 +279,7 @@ University of Texas -> The University of Texas at Austin
         ),
         "tsv_error": "Não foi possível ler o arquivo TSV.",
         "txt_error": "Não foi possível ler o arquivo TXT.",
-        "success": "O arquivo TSV foi processado com sucesso.",
+        "success": "O TSV e a lista TXT de entidades atualizada foram gerados com sucesso.",
         "txt_format": "Formato TXT esperado",
         "unrecognized_content": "Conteúdo encontrado antes de um cabeçalho TXT reconhecido",
         "unrecognized_help": (
@@ -395,7 +404,7 @@ def decode_uploaded_file(uploaded_file):
 
 def read_tsv(uploaded_file):
     """
-    Read a TSV entirely as strings so that textual content,
+    Read the TSV entirely as strings so textual content,
     identifiers, and empty cells are preserved.
     """
     text = decode_uploaded_file(uploaded_file)
@@ -421,9 +430,6 @@ def normalize_value(
 ):
     """
     Normalize a value for comparison only.
-
-    This function does not directly alter the value written
-    to the final TSV.
     """
     value = str(value)
 
@@ -448,8 +454,8 @@ def normalize_value(
 
 def normalize_heading(value):
     """
-    Normalize TXT section headings so that headings can be
-    recognized across English, Spanish, and Portuguese.
+    Normalize TXT section headings for recognition across
+    English, Spanish, and Portuguese.
     """
     value = str(value).strip().casefold()
 
@@ -459,12 +465,7 @@ def normalize_heading(value):
         if not unicodedata.combining(character)
     )
 
-    # Allow headings such as:
-    # People:
-    # People -
-    # People_
     value = re.sub(r"[:\-_]+$", "", value)
-
     value = re.sub(r"\s+", " ", value)
 
     return value.strip()
@@ -514,17 +515,6 @@ def parse_reference_txt(text):
         Modifications
         Mexico -> México
         Univ. of Texas -> University of Texas
-
-    Returns:
-
-        {
-            "people": [...],
-            "organizations": [...],
-            "places": [...],
-            "modifications": [
-                ("old value", "new value")
-            ]
-        }
     """
 
     sections = {
@@ -550,19 +540,13 @@ def parse_reference_txt(text):
             current_section = section_heading
             continue
 
-        # Content before any recognized section heading.
         if current_section is None:
             unrecognized_content.append(line)
             continue
 
-        # ----------------------------------------------------
-        # Parse modification rules
-        # ----------------------------------------------------
-
         if current_section == "modifications":
 
             if "->" not in line:
-                # Ignore malformed modification lines.
                 continue
 
             old_value, new_value = line.split("->", 1)
@@ -574,10 +558,6 @@ def parse_reference_txt(text):
                 sections["modifications"].append(
                     (old_value, new_value)
                 )
-
-        # ----------------------------------------------------
-        # Parse approved entity values
-        # ----------------------------------------------------
 
         else:
             sections[current_section].append(line)
@@ -594,7 +574,6 @@ def parse_reference_txt(text):
             )
         )
 
-    # Remove duplicate modification pairs while preserving order.
     sections["modifications"] = list(
         dict.fromkeys(
             sections["modifications"]
@@ -627,15 +606,13 @@ def split_cell_values(cell, separator):
     ]
 
 
-def join_cell_values(
+def deduplicate_values(
     values,
-    separator,
     ignore_case=True,
     ignore_accents=False,
 ):
     """
-    Join multiple entity values while removing duplicates
-    and preserving their original order.
+    Remove duplicate values while preserving original order.
     """
     unique_values = []
     seen = set()
@@ -653,6 +630,24 @@ def join_cell_values(
             seen.add(comparison_key)
             unique_values.append(value)
 
+    return unique_values
+
+
+def join_cell_values(
+    values,
+    separator,
+    ignore_case=True,
+    ignore_accents=False,
+):
+    """
+    Join multiple entity values using the selected cell separator.
+    """
+    unique_values = deduplicate_values(
+        values=values,
+        ignore_case=ignore_case,
+        ignore_accents=ignore_accents,
+    )
+
     return f" {separator} ".join(unique_values)
 
 
@@ -667,36 +662,28 @@ def build_reference_lookups(
     strip_whitespace,
 ):
     """
-    Build three independent reference lookups.
+    Build separate lookups for:
+
+    1. Entity category.
+    2. Preferred TXT spelling.
+    3. Modifications.
 
     Processing order:
 
-        1. Category lookup
-           Determines whether the ORIGINAL TSV value belongs
-           to People, Organizations, or Places.
-
-        2. Preferred spelling lookup
-           Uses the spelling from the appropriate TXT category list.
-
-        3. Modification lookup
-           Applied only AFTER the value has been reorganized
-           and confirmed as valid.
-
-    A modification rule does NOT determine:
-        - whether a value is valid;
-        - whether a value should be retained;
-        - which entity category the value belongs to.
+        Original TSV value
+            ↓
+        Determine TXT category
+            ↓
+        Move to correct TSV column
+            ↓
+        Delete if absent from all category lists
+            ↓
+        Apply modification
     """
 
     category_lookup = {}
-
     preferred_spelling_lookup = {}
-
     modification_lookup = {}
-
-    # --------------------------------------------------------
-    # Build People / Organizations / Places lookups
-    # --------------------------------------------------------
 
     for category in [
         "people",
@@ -714,12 +701,7 @@ def build_reference_lookups(
             )
 
             category_lookup[normalized] = category
-
             preferred_spelling_lookup[normalized] = value
-
-    # --------------------------------------------------------
-    # Build modifications lookup separately
-    # --------------------------------------------------------
 
     for old_value, new_value in reference_sections["modifications"]:
 
@@ -753,52 +735,26 @@ def clean_and_reorganize_dataframe(
     strip_whitespace,
 ):
     """
-    Process the TSV in this exact sequence:
+    Process the TSV in this exact order:
 
     STEP 1 — REORGANIZE
-        Examine each ORIGINAL TSV value.
-
-        Determine whether it belongs to the TXT:
-            - People list
-            - Organizations list
-            - Places list
-
-        Place it in the corresponding TSV column.
+        Determine the category of each original TSV value using
+        the TXT People, Organizations, and Places lists.
 
     STEP 2 — DELETE
-        If the ORIGINAL TSV value does not appear in any of the
-        three TXT category lists, remove it.
+        Remove values absent from all three TXT category lists.
 
     STEP 3 — MODIFY
-        After a retained value has been assigned to its correct
-        TSV column, apply any matching TXT modification rule:
+        Apply matching old value -> new value rules only after
+        category validation and reorganization.
 
-            old value -> new value
+    STEP 4 — TAGS
+        Create a final Tags column combining all resulting values
+        from the People, Organizations, and Places columns.
 
-    Important:
-        Modification rules are applied only to values that survived
-        the category-validation stage.
+        Tags are separated by exactly:
 
-        A modification cannot rescue a TSV value that does not occur
-        in one of the People, Organizations, or Places TXT lists.
-
-    Example:
-
-        TXT:
-
-            Places
-            Mexico
-
-            Modifications
-            Mexico -> México
-
-        TSV value:
-            Mexico
-
-        Result:
-            The value is first recognized as a Place,
-            then retained,
-            then changed to México.
+            " | "
     """
 
     cleaned_df = dataframe.copy()
@@ -823,9 +779,7 @@ def clean_and_reorganize_dataframe(
     }
 
     removed_records = []
-
     moved_records = []
-
     modified_records = []
 
     entity_categories = [
@@ -840,16 +794,11 @@ def clean_and_reorganize_dataframe(
 
     for row_index in cleaned_df.index:
 
-        # This dictionary rebuilds the three entity columns.
         row_output = {
             "people": [],
             "organizations": [],
             "places": [],
         }
-
-        # ----------------------------------------------------
-        # Read all values from all three original TSV columns.
-        # ----------------------------------------------------
 
         for source_category in entity_categories:
 
@@ -867,17 +816,13 @@ def clean_and_reorganize_dataframe(
                 separator=separator,
             )
 
-            # ------------------------------------------------
-            # Process each value independently.
-            # ------------------------------------------------
-
             for original_value in values:
 
                 stats["checked"] += 1
 
                 # ==================================================
                 # STEP 1:
-                # DETERMINE CATEGORY FROM THE ORIGINAL TSV VALUE
+                # DETERMINE CATEGORY FROM ORIGINAL TSV VALUE
                 # ==================================================
 
                 normalized_original = normalize_value(
@@ -893,7 +838,7 @@ def clean_and_reorganize_dataframe(
 
                 # ==================================================
                 # STEP 2:
-                # DELETE VALUE IF ABSENT FROM ALL TXT CATEGORIES
+                # DELETE IF ABSENT FROM ALL TXT CATEGORY LISTS
                 # ==================================================
 
                 if destination_category is None:
@@ -910,21 +855,13 @@ def clean_and_reorganize_dataframe(
 
                     continue
 
-                # --------------------------------------------------
-                # Use the preferred spelling from the TXT category
-                # list before applying modifications.
-                # --------------------------------------------------
-
+                # Use spelling from TXT category list.
                 categorized_value = preferred_spelling_lookup.get(
                     normalized_original,
                     original_value,
                 )
 
-                # --------------------------------------------------
-                # Determine whether the value remains in its original
-                # column or moves to another entity column.
-                # --------------------------------------------------
-
+                # Record whether the value stayed or moved.
                 if destination_category == source_category:
 
                     stats["kept"] += 1
@@ -946,7 +883,7 @@ def clean_and_reorganize_dataframe(
 
                 # ==================================================
                 # STEP 3:
-                # APPLY MODIFICATIONS AFTER REORGANIZATION/VALIDATION
+                # APPLY MODIFICATION
                 # ==================================================
 
                 normalized_categorized_value = normalize_value(
@@ -978,13 +915,8 @@ def clean_and_reorganize_dataframe(
 
                     final_value = categorized_value
 
-                # --------------------------------------------------
-                # Add the final value to the category identified
-                # BEFORE the modification was applied.
-                #
-                # A modification changes the value, not its category.
-                # --------------------------------------------------
-
+                # A modification changes the displayed value,
+                # but does not change the category determined earlier.
                 row_output[
                     destination_category
                 ].append(
@@ -992,7 +924,7 @@ def clean_and_reorganize_dataframe(
                 )
 
         # ====================================================
-        # WRITE THE REBUILT ENTITY COLUMNS BACK TO THE ROW
+        # WRITE REORGANIZED ENTITY COLUMNS BACK TO TSV
         # ====================================================
 
         for category in entity_categories:
@@ -1011,6 +943,69 @@ def clean_and_reorganize_dataframe(
                 ignore_accents=ignore_accents,
             )
 
+    # ========================================================
+    # STEP 4:
+    # CREATE FINAL TAGS COLUMN
+    # ========================================================
+
+    tags_values = []
+
+    for row_index in cleaned_df.index:
+
+        combined_values = []
+
+        # Keep this order:
+        # People → Organizations → Places
+        for category in [
+            "people",
+            "organizations",
+            "places",
+        ]:
+
+            column_name = category_columns[
+                category
+            ]
+
+            cell_values = split_cell_values(
+                cell=cleaned_df.at[
+                    row_index,
+                    column_name,
+                ],
+                separator=separator,
+            )
+
+            combined_values.extend(
+                cell_values
+            )
+
+        combined_values = deduplicate_values(
+            values=combined_values,
+            ignore_case=ignore_case,
+            ignore_accents=ignore_accents,
+        )
+
+        tags_values.append(
+            " | ".join(
+                combined_values
+            )
+        )
+
+    # If the original TSV already contains a Tags column,
+    # this replaces it with the newly generated final Tags column.
+    cleaned_df["Tags"] = tags_values
+
+    # Ensure Tags appears at the very end of the TSV.
+    columns_without_tags = [
+        column
+        for column in cleaned_df.columns
+        if column != "Tags"
+    ]
+
+    cleaned_df = cleaned_df[
+        columns_without_tags
+        + ["Tags"]
+    ]
+
     return (
         cleaned_df,
         stats,
@@ -1021,21 +1016,175 @@ def clean_and_reorganize_dataframe(
 
 
 # ============================================================
-# TSV DOWNLOAD
+# UPDATED TXT REFERENCE LIST
+# ============================================================
+
+def apply_modifications_to_reference_sections(
+    reference_sections,
+    ignore_case,
+    ignore_accents,
+    strip_whitespace,
+):
+    """
+    Create a new entity reference list with all requested
+    modifications already reflected.
+
+    Example input:
+
+        Places
+        Mexico
+
+        Modifications
+        Mexico -> México
+
+    Updated TXT output:
+
+        Places
+        México
+
+    The updated TXT contains only:
+        People
+        Organizations
+        Places
+
+    The Modifications section is omitted because its changes
+    have already been incorporated into the entity lists.
+    """
+
+    modification_lookup = {}
+
+    for old_value, new_value in reference_sections["modifications"]:
+
+        normalized_old = normalize_value(
+            value=old_value,
+            ignore_case=ignore_case,
+            ignore_accents=ignore_accents,
+            strip_whitespace=strip_whitespace,
+        )
+
+        modification_lookup[
+            normalized_old
+        ] = new_value
+
+    updated_sections = {
+        "people": [],
+        "organizations": [],
+        "places": [],
+    }
+
+    for category in [
+        "people",
+        "organizations",
+        "places",
+    ]:
+
+        updated_values = []
+
+        for value in reference_sections[
+            category
+        ]:
+
+            normalized_value = normalize_value(
+                value=value,
+                ignore_case=ignore_case,
+                ignore_accents=ignore_accents,
+                strip_whitespace=strip_whitespace,
+            )
+
+            updated_value = modification_lookup.get(
+                normalized_value,
+                value,
+            )
+
+            updated_values.append(
+                updated_value
+            )
+
+        # Remove duplicates created by modifications.
+        updated_sections[
+            category
+        ] = deduplicate_values(
+            values=updated_values,
+            ignore_case=ignore_case,
+            ignore_accents=ignore_accents,
+        )
+
+    return updated_sections
+
+
+def make_updated_txt(
+    updated_sections,
+):
+    """
+    Generate a clean TXT reference list with modifications
+    already incorporated.
+
+    Output headings remain in English so that the generated file
+    can be uploaded directly back into this app regardless of the
+    selected interface language.
+    """
+
+    lines = []
+
+    lines.append(
+        "People"
+    )
+
+    lines.extend(
+        updated_sections[
+            "people"
+        ]
+    )
+
+    lines.append("")
+    lines.append(
+        "Organizations"
+    )
+
+    lines.extend(
+        updated_sections[
+            "organizations"
+        ]
+    )
+
+    lines.append("")
+    lines.append(
+        "Places"
+    )
+
+    lines.extend(
+        updated_sections[
+            "places"
+        ]
+    )
+
+    return "\n".join(
+        lines
+    ).strip() + "\n"
+
+
+# ============================================================
+# DOWNLOAD HELPERS
 # ============================================================
 
 def make_tsv_download(dataframe):
     """
     Convert the DataFrame to UTF-8 TSV bytes.
-
-    utf-8-sig is used to improve compatibility with spreadsheet
-    applications such as Microsoft Excel.
     """
     return dataframe.to_csv(
         sep="\t",
         index=False,
         lineterminator="\n",
     ).encode(
+        "utf-8-sig"
+    )
+
+
+def make_txt_download(text):
+    """
+    Convert TXT content to UTF-8 bytes.
+    """
+    return text.encode(
         "utf-8-sig"
     )
 
@@ -1274,10 +1423,6 @@ if (
     )
 
 
-    # --------------------------------------------------------
-    # Try to choose intelligent default columns based on names.
-    # --------------------------------------------------------
-
     def find_default_column_index(
         columns,
         keywords,
@@ -1288,7 +1433,9 @@ if (
         keywords. Otherwise use the fallback index.
         """
 
-        for index, column in enumerate(columns):
+        for index, column in enumerate(
+            columns
+        ):
 
             normalized_column = normalize_heading(
                 column
@@ -1442,11 +1589,6 @@ if (
             places_column,
         ]
 
-        # ----------------------------------------------------
-        # Prevent multiple categories from being mapped
-        # to the same TSV column.
-        # ----------------------------------------------------
-
         if len(
             set(
                 selected_entity_columns
@@ -1487,6 +1629,24 @@ if (
             ignore_case=ignore_case,
             ignore_accents=ignore_accents,
             strip_whitespace=strip_whitespace,
+        )
+
+
+        # ====================================================
+        # GENERATE UPDATED TXT REFERENCE LIST
+        # ====================================================
+
+        updated_reference_sections = (
+            apply_modifications_to_reference_sections(
+                reference_sections=reference_sections,
+                ignore_case=ignore_case,
+                ignore_accents=ignore_accents,
+                strip_whitespace=strip_whitespace,
+            )
+        )
+
+        updated_txt_content = make_updated_txt(
+            updated_reference_sections
         )
 
 
@@ -1735,21 +1895,57 @@ if (
 
 
         # ====================================================
-        # DOWNLOAD CLEANED TSV
+        # UPDATED TXT PREVIEW
+        # ====================================================
+
+        with st.expander(
+            t["updated_txt_preview"]
+        ):
+
+            st.code(
+                updated_txt_content,
+                language="text",
+            )
+
+
+        # ====================================================
+        # DOWNLOADS
         # ====================================================
 
         cleaned_tsv_bytes = make_tsv_download(
             cleaned_df
         )
 
-        st.download_button(
-            label=t["download"],
-            data=cleaned_tsv_bytes,
-            file_name=t["download_name"],
-            mime="text/tab-separated-values",
-            type="primary",
-            use_container_width=True,
+        updated_txt_bytes = make_txt_download(
+            updated_txt_content
         )
+
+
+        download_col1, download_col2 = st.columns(2)
+
+
+        with download_col1:
+
+            st.download_button(
+                label=t["download_tsv"],
+                data=cleaned_tsv_bytes,
+                file_name=t["download_tsv_name"],
+                mime="text/tab-separated-values",
+                type="primary",
+                use_container_width=True,
+            )
+
+
+        with download_col2:
+
+            st.download_button(
+                label=t["download_txt"],
+                data=updated_txt_bytes,
+                file_name=t["download_txt_name"],
+                mime="text/plain",
+                type="primary",
+                use_container_width=True,
+            )
 
 
 # ============================================================
